@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  portfolio-backend:
+    build: .
+    container_name: portfolio-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - DATABASE_URL=file:./dev.db
+      - JWT_SECRET=your_super_secret_jwt_key_here
+      - FRONTEND_URL=http://localhost:5173
+    volumes:
+      # Mount logs directory for persistent logs
+      - ./logs:/app/logs
+      # Mount database file for persistence
+      - ./prisma/dev.db:/app/prisma/dev.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Optional: PostgreSQL for production
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: portfolio-postgres
+  #   environment:
+  #     - POSTGRES_DB=portfolio
+  #     - POSTGRES_USER=portfolio_user
+  #     - POSTGRES_PASSWORD=portfolio_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   restart: unless-stopped
+
+# volumes:
+#   postgres_data:

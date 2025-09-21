@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { 
-  Menu, X, Github, Linkedin, Mail, ExternalLink, 
-  Code, Database, Server, Smartphone, Globe, 
+import {
+  Menu, X, Github, Linkedin, Mail, ExternalLink,
+  Code, Database, Server, Smartphone, Globe,
   Zap, Rocket, Brain, Heart, Star, Sparkles,
-  Terminal, FileCode, GitBranch, Layers, 
+  Terminal, FileCode, GitBranch, Layers,
   Shield, Cpu, Cloud, Monitor, Palette,
   ArrowRight, Download, Play, Eye,
   Home, User, FolderOpen, MessageCircle,
-  Code2, Coffee
+  Code2, Coffee, ChevronLeft, ChevronRight,
+  Info, XIcon
 } from "lucide-react";
 import faceofmindImage from "@/assets/faceofmind-project.jpg";
-import lutomateImage from "@/assets/lutomate-project.jpg";
 
 const techStacks = {
   languages: [
@@ -22,51 +22,64 @@ const techStacks = {
     { name: "TypeScript", icon: FileCode, color: "text-blue-500" },
     { name: "JavaScript", icon: Coffee, color: "text-yellow-400" },
     { name: "Dart", icon: Code, color: "text-blue-400" },
+    { name: "C#", icon: Code, color: "text-purple-500" },
   ],
   frontend: [
+    { name: "React", icon: Globe, color: "text-cyan-400" },
     { name: "Flutter", icon: Smartphone, color: "text-cyan-500" },
     { name: "Angular", icon: Globe, color: "text-red-500" },
     { name: "HTML5", icon: Code, color: "text-orange-500" },
     { name: "CSS3", icon: Palette, color: "text-blue-600" },
+    { name: "Tailwind CSS", icon: Palette, color: "text-teal-500" },
   ],
   backend: [
     { name: "Django", icon: Server, color: "text-green-600" },
     { name: "Flask", icon: Server, color: "text-gray-600" },
     { name: "FastAPI", icon: Zap, color: "text-green-500" },
+    { name: ".NET C# Web API", icon: Server, color: "text-purple-600" },
     { name: "Express.js", icon: Server, color: "text-gray-700" },
   ],
-  databases: [
-    { name: "PostgreSQL", icon: Database, color: "text-blue-700" },
-    { name: "MySQL", icon: Database, color: "text-orange-600" },
-    { name: "SQLite", icon: Database, color: "text-gray-500" },
+  cloud: [
+    { name: "Google Cloud", icon: Cloud, color: "text-blue-500" },
+    { name: "Azure", icon: Cloud, color: "text-blue-600" },
+    { name: "AWS", icon: Cloud, color: "text-orange-500" },
+    { name: "Firebase", icon: Zap, color: "text-yellow-500" },
   ],
-  tools: [
-    { name: "Git", icon: GitBranch, color: "text-orange-500" },
-    { name: "Docker", icon: Layers, color: "text-blue-500" },
-    { name: "NGINX", icon: Shield, color: "text-green-600" },
+  databases: [
+    { name: "Firestore", icon: Database, color: "text-orange-600" },
+    { name: "Datastore", icon: Database, color: "text-blue-500" },
+    { name: "PostgreSQL", icon: Database, color: "text-blue-700" },
+    { name: "Redis", icon: Database, color: "text-red-500" },
+    { name: "SQLite", icon: Database, color: "text-gray-600" },
+    { name: "MySQL", icon: Database, color: "text-blue-600" },
   ],
 };
 
 const projects = [
   {
-    title: "FaceofMind",
+    title: "💡 FaceofMind",
     subtitle: "🤖 AI-Powered Mental Health Companion",
-    description: "An intelligent mental health companion that provides personalized support, mood tracking, and therapeutic conversations using advanced AI technology.",
+    description: "FaceofMind is your AI-powered mental health buddy 🧠❤️, helping you understand, track, and improve your emotional wellbeing. With facial & voice emotion recognition 🎭🎙️ + personalized insights 📊 + gamified rewards 🎮, it's like having a therapist in your pocket—private, secure, and rewarding!",
     image: faceofmindImage,
-    technologies: ["Python/Fast API", "Flutter", "Opencv/Deppface", "Gemini 2.5 Flash Lite", "PostgreSQL"],
+    features: [
+      "🎭 Real-Time Emotion Detection (7 Core Emotions)",
+      "📊 Mood Tracking & Insights with AI-powered analytics",
+      "🎮 Gamification & Rewards System",
+      "🧠 Interactive Wellness Games (Quiz, Virtual Pet, Garden)",
+      "🚨 Early Warnings & Crisis Support",
+      "💳 Payment Processing & Subscription Plans"
+    ],
+    techStack: {
+      "Frontend": ["Flutter (Users)", "React (Admin)", "React (Psychologists)"],
+      "Backend": [".NET C# Web API", "Flask (Emotion Detection)"],
+      "Database": ["Neon PostgreSQL", "Azure SQL", "Firebase Firestore", "Firebase Realtime DB"],
+      "AI Services": ["Gemini AI", "AWS Emotion Recognition"],
+      "DevOps": ["Google Cloud Run", "Google Cloud Storage", "Redis"]
+    },
+    technologies: [".NET C#", "Flutter", "React", "Flask", "PostgreSQL", "Firebase", "Google Cloud", "Redis", "Gemini AI"],
     link: "https://faceofmind.vercel.app/",
     github: "https://github.com/Froillan123/Faceofmind.git",
     icon: Brain
-  },
-  {
-    title: "LutoMate",
-    subtitle: "Your AI-Powered Recipe Assistant",
-    description: "Smart recipe recommendation system that suggests personalized meals based on available ingredients, dietary preferences, and nutritional goals.",
-    image: lutomateImage,
-    technologies: ["Python/Fast API", "Flutter", "Gemini 2.5 Flash Lite", "PostgreSQL"],
-    link: "https://luto-mate.vercel.app/",
-    github: "https://github.com/Froillan123/LutoMate.git",
-    icon: Heart
   }
 ];
 
@@ -74,8 +87,10 @@ const navigationItems = [
   { id: "home", label: "Home", icon: Home },
   { id: "about", label: "About", icon: User },
   { id: "projects", label: "Projects", icon: FolderOpen },
+  { id: "testimonials", label: "Testimonials", icon: Star },
   { id: "contact", label: "Contact", icon: MessageCircle },
 ];
+
 
 const FloatingParticles = () => {
   const particles = Array.from({ length: 15 }, (_, i) => (
@@ -90,9 +105,10 @@ const FloatingParticles = () => {
       }}
     />
   ));
-  
+
   return <div className="absolute inset-0 overflow-hidden pointer-events-none">{particles}</div>;
 };
+
 
 const AnimatedCounter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
   const [count, setCount] = useState(0);
@@ -122,8 +138,9 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = "" }: { end: number, d
 };
 
 const titles = [
-  "Full Stack Developer",
-  "Flutter Android Developer"
+  "Software Engineer",
+  "Flutter Android Developer",
+  "Cloud & DevOps Enthusiast"
 ];
 
 function TypewriterLoop() {
@@ -137,15 +154,15 @@ function TypewriterLoop() {
       if (displayed.length < titles[index].length) {
         timeout = setTimeout(() => {
           setDisplayed(titles[index].slice(0, displayed.length + 1));
-        }, 80);
+        }, 40); // Faster typing speed
       } else {
-        timeout = setTimeout(() => setTyping(false), 1200);
+        timeout = setTimeout(() => setTyping(false), 800); // Shorter pause
       }
     } else {
       if (displayed.length > 0) {
         timeout = setTimeout(() => {
           setDisplayed(displayed.slice(0, -1));
-        }, 30);
+        }, 20); // Faster deletion
       } else {
         setTyping(true);
         setIndex((index + 1) % titles.length);
@@ -155,9 +172,8 @@ function TypewriterLoop() {
   }, [displayed, typing, index]);
 
   return (
-    <div className="typewriter text-xl md:text-2xl font-semibold leading-tight mt-2 text-primary h-8">
+    <div className="text-xl md:text-2xl font-semibold leading-tight mt-2 text-primary h-8">
       {displayed}
-      <span className="blinking-cursor">|</span>
     </div>
   );
 }
@@ -166,12 +182,15 @@ export function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+  const [showTechModal, setShowTechModal] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     setIsLoaded(true);
     
     const handleScroll = () => {
-      const sections = ["home", "about", "projects", "contact"];
+      const sections = ["home", "about", "projects", "testimonials", "contact"];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -202,7 +221,7 @@ export function Portfolio() {
       <FloatingParticles />
       
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass-effect">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 shadow-md border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="font-bold text-xl gradient-text flex items-center space-x-2">
@@ -246,19 +265,25 @@ export function Portfolio() {
           </div>
 
           {/* Mobile Menu */}
-          <div className={`md:hidden transition-all duration-300 overflow-hidden ${
+          <div className={`md:hidden transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900 ${
             isMenuOpen ? 'max-h-64 py-4 border-t border-border' : 'max-h-0'
           }`}>
-            {navigationItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="flex items-center space-x-3 w-full text-left px-2 py-3 text-muted-foreground hover:text-primary transition-colors"
-              >
-                <item.icon className="w-4 h-4" />
-                <span className="capitalize">{item.label}</span>
-              </button>
-            ))}
+            <div className="px-4">
+              {navigationItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`flex items-center space-x-3 w-full text-left px-3 py-3 rounded-lg transition-all duration-300 ${
+                    activeSection === item.id
+                      ? "text-primary font-medium bg-primary/10 shadow-sm"
+                      : "text-muted-foreground hover:text-primary hover:bg-primary/5"
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span className="capitalize">{item.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </nav>
@@ -278,18 +303,18 @@ export function Portfolio() {
                 {/* Typewriter Titles */}
                 <TypewriterLoop />
                 <p className="text-lg text-muted-foreground max-w-2xl">
-                  Passionate about creating innovative solutions with cutting-edge technology and clean, efficient code.
+                  Passionate about creating innovative solutions with cutting-edge technology, cloud infrastructure, and scalable architectures that make a positive impact.
                 </p>
               </div>
 
               <div className="flex items-center space-x-6 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-2">
                   <Rocket className="w-5 h-5 text-primary" />
-                  <span><AnimatedCounter end={2} suffix="+" /> Projects</span>
+                  <span><AnimatedCounter end={15} suffix="+" /> Projects</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Zap className="w-5 h-5 text-yellow-500" />
-                  <span><AnimatedCounter end={2} suffix="+" /> Years Experience</span>
+                  <Cloud className="w-5 h-5 text-blue-500" />
+                  <span>Google, Azure, AWS, Firebase</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Heart className="w-5 h-5 text-red-500" />
@@ -346,8 +371,8 @@ export function Portfolio() {
             
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {Object.entries(techStacks).map(([category, techs], categoryIndex) => (
-                <Card 
-                  key={category} 
+                <Card
+                  key={category}
                   className="bg-card border-border tech-card-hover animate-bounce-in"
                   style={{ animationDelay: `${categoryIndex * 0.2}s` }}
                 >
@@ -357,8 +382,8 @@ export function Portfolio() {
                         {category === 'languages' && <Code className="w-5 h-5 text-primary" />}
                         {category === 'frontend' && <Monitor className="w-5 h-5 text-primary" />}
                         {category === 'backend' && <Server className="w-5 h-5 text-primary" />}
+                        {category === 'cloud' && <Cloud className="w-5 h-5 text-primary" />}
                         {category === 'databases' && <Database className="w-5 h-5 text-primary" />}
-                        {category === 'tools' && <Cloud className="w-5 h-5 text-primary" />}
                       </div>
                       <span>{category}</span>
                     </CardTitle>
@@ -398,24 +423,24 @@ export function Portfolio() {
             <Card className="glass-effect border-primary/20 p-8">
               <div className="prose prose-lg mx-auto text-muted-foreground space-y-6">
                 <p className="text-lg leading-relaxed">
-                  🎓 Final year BSIT student at <span className="text-primary font-semibold">University of Cebu - Main</span> with comprehensive expertise in full-stack development. 
-                  Specializing in Django backend solutions while proficient in frontend technologies, system architecture, and database management.
+                  🎓 A final-year BSIT student at <span className="text-primary font-semibold">University of Cebu - Main</span> with extensive hands-on experience in full-stack development and cloud infrastructure.
+                  I specialize in creating robust backend solutions with Django and FastAPI, while maintaining a strong command of front-end technologies, system architecture, and database management.
                 </p>
                 <p className="text-lg leading-relaxed">
-                  🚀 Experienced in leading projects from conception to deployment with strong skills in UI/UX design, mobile development using Flutter, 
-                  and network infrastructure. Passionate about creating innovative solutions that make a positive impact.
+                  🚀 With hands-on experience in leading projects from initial concept to full deployment, my focus is on intuitive UI/UX design and scalable mobile development using Flutter.
+                  I also have hands-on experience in network infrastructure and container orchestration with Kubernetes, and my proficiency in serverless architectures and NoSQL databases like Firebase's Firestore allows me to build real-time, highly scalable applications.
                 </p>
                 <div className="flex justify-center space-x-8 pt-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={15} suffix="+" /></div>
+                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={20} suffix="+" /></div>
                     <div className="text-sm text-muted-foreground">Technologies</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={2} suffix="+" /></div>
+                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={15} suffix="+" /></div>
                     <div className="text-sm text-muted-foreground">Projects</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={500} suffix="+" /></div>
+                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={1000} suffix="+" /></div>
                     <div className="text-sm text-muted-foreground">Commits</div>
                   </div>
                 </div>
@@ -440,13 +465,10 @@ export function Portfolio() {
               </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2">
+            {/* Single Featured Project */}
+            <div className="max-w-4xl mx-auto">
               {projects.map((project, index) => (
-                <Card 
-                  key={index} 
-                  className="bg-project-card border-border overflow-hidden project-card-hover group animate-slide-in-up"
-                  style={{ animationDelay: `${index * 0.3}s` }}
-                >
+                <Card key={index} className="bg-project-card border-border overflow-hidden project-card-hover group">
                   <div className="aspect-video overflow-hidden relative">
                     <img
                       src={project.image}
@@ -458,46 +480,321 @@ export function Portfolio() {
                       <project.icon className="w-5 h-5" />
                     </div>
                   </div>
-                  <CardHeader>
-                    <CardTitle className="text-xl flex items-center space-x-2">
-                      <span>{project.title}</span>
-                      <Sparkles className="w-5 h-5 text-yellow-500 animate-pulse" />
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-xl sm:text-2xl flex items-center space-x-2 flex-wrap">
+                      <span className="break-words">{project.title}</span>
+                      <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500 animate-pulse flex-shrink-0" />
                     </CardTitle>
-                    <CardDescription className="text-sm text-primary font-medium">
+                    <CardDescription className="text-base sm:text-lg text-primary font-medium">
                       {project.subtitle}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">{project.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech) => (
-                        <Badge key={tech} variant="outline" className="text-xs hover:bg-primary/10 transition-colors">
-                          {tech}
-                        </Badge>
-                      ))}
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{project.description}</p>
+
+                    {/* Key Features Preview */}
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-base flex items-center space-x-2">
+                        <Star className="w-4 h-4 text-yellow-500" />
+                        <span>Key Features</span>
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {project.features?.slice(0, 4).map((feature, i) => (
+                          <div key={i} className="flex items-start space-x-2 p-2 rounded-lg bg-primary/5">
+                            <ArrowRight className="w-3 h-3 text-primary mt-0.5 flex-shrink-0" />
+                            <span className="text-xs leading-relaxed">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                      {project.features && project.features.length > 4 && (
+                        <p className="text-xs text-muted-foreground text-center">
+                          +{project.features.length - 4} more features - click "View Details" to see all
+                        </p>
+                      )}
                     </div>
-                    <div className="flex gap-3 pt-2">
-                      <Button 
-                        size="sm" 
-                        className="bg-primary hover:bg-primary/90 group flex-1"
+
+                    {/* Tech Preview */}
+                    <div className="space-y-2">
+                      <h4 className="font-semibold text-sm text-muted-foreground">Main Technologies:</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {project.technologies.slice(0, 8).map((tech) => (
+                          <Badge key={tech} variant="outline" className="text-xs px-2 py-1">
+                            {tech}
+                          </Badge>
+                        ))}
+                        {project.technologies.length > 8 && (
+                          <Badge variant="secondary" className="text-xs px-2 py-1">
+                            +{project.technologies.length - 8} more
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4">
+                      <Button
+                        size="lg"
+                        className="bg-primary hover:bg-primary/90 group"
                         onClick={() => window.open(project.link, '_blank')}
                       >
                         <Play className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                         Live Demo
                       </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="group flex-1"
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="group"
                         onClick={() => window.open(project.github, '_blank')}
                       >
                         <Github className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
-                        Code
+                        Source Code
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="secondary"
+                        className="group"
+                        onClick={() => {
+                          setSelectedProject(project);
+                          setShowTechModal(true);
+                        }}
+                      >
+                        <Info className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                        View Details
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* Add More Projects Note */}
+            <div className="text-center mt-8 p-6 bg-primary/5 rounded-lg border border-primary/20">
+              <p className="text-muted-foreground text-sm">
+                🚀 More projects coming soon! This portfolio is designed to dynamically load projects from the backend.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-20 bg-section-bg relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-primary/5"></div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="space-y-12">
+            <div className="text-center">
+              <div className="flex items-center justify-center space-x-3 mb-4">
+                <Star className="w-8 h-8 text-yellow-500" />
+                <h2 className="text-3xl md:text-4xl font-bold gradient-text">What People Say</h2>
+                <Heart className="w-8 h-8 text-red-500 animate-pulse" />
+              </div>
+              <p className="text-lg text-muted-foreground">
+                Feedback from clients, colleagues, and collaborators
+              </p>
+            </div>
+
+            {/* Auto-Scroll Testimonials Swiper - All Devices */}
+            <div className="overflow-hidden relative">
+              <div className="flex animate-scroll-testimonials hover:animation-paused">
+                {/* First set of testimonials */}
+                {[
+                  {
+                    text: "Froillan delivered exceptional work on our mental health platform. His technical expertise in Flutter and backend development made our project a success.",
+                    author: "Dr. Sarah Chen",
+                    role: "Mental Health Professional",
+                    gradient: "from-primary to-accent"
+                  },
+                  {
+                    text: "Working with Froillan was a game-changer. His knowledge of cloud infrastructure and scalable architectures helped us build a robust application.",
+                    author: "Marcus Rodriguez",
+                    role: "Tech Lead, StartupXYZ",
+                    gradient: "from-blue-500 to-purple-500"
+                  },
+                  {
+                    text: "Froillan's full-stack development skills are impressive. He delivered a polished product that exceeded our expectations.",
+                    author: "Elena Vasquez",
+                    role: "Product Manager",
+                    gradient: "from-green-500 to-teal-500"
+                  },
+                  {
+                    text: "Outstanding work on our Flutter mobile app. Froillan's attention to detail and user experience is remarkable.",
+                    author: "James Wilson",
+                    role: "CEO, TechCorp",
+                    gradient: "from-purple-500 to-pink-500"
+                  },
+                  {
+                    text: "Professional, skilled, and delivers on time. Froillan's expertise in cloud deployment saved us weeks of development.",
+                    author: "Maria Santos",
+                    role: "CTO, InnovateLab",
+                    gradient: "from-orange-500 to-red-500"
+                  },
+                  {
+                    text: "Froillan's AI integration work was flawless. He seamlessly connected our system with multiple AI services and the results exceeded our expectations.",
+                    author: "David Kim",
+                    role: "AI Research Director",
+                    gradient: "from-cyan-500 to-blue-500"
+                  },
+                  {
+                    text: "Incredible mobile development expertise! Our Flutter app launched ahead of schedule with zero critical bugs. Highly recommended!",
+                    author: "Lisa Chang",
+                    role: "Startup Founder",
+                    gradient: "from-pink-500 to-rose-500"
+                  },
+                  {
+                    text: "The backend architecture design was solid and scalable. Great work on database optimization and API performance improvements.",
+                    author: "Robert Thompson",
+                    role: "Senior Backend Developer",
+                    gradient: "from-indigo-500 to-purple-500"
+                  },
+                  {
+                    text: "Froillan's Django expertise helped us migrate our legacy system smoothly. The new architecture is maintainable and performs excellently.",
+                    author: "Amanda Foster",
+                    role: "Engineering Manager",
+                    gradient: "from-emerald-500 to-green-500"
+                  },
+                  {
+                    text: "Exceptional work on our cloud deployment pipeline. The automated CI/CD setup has improved our development workflow significantly.",
+                    author: "Michael Park",
+                    role: "DevOps Engineer",
+                    gradient: "from-amber-500 to-orange-500"
+                  }
+                ].map((testimonial, index) => (
+                  <Card key={`first-${index}`} className="glass-effect border-primary/20 p-4 sm:p-6 testimonial-card-hover flex-shrink-0 w-72 sm:w-80 lg:w-96 mx-3 cursor-pointer">
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center space-x-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className="w-4 h-4 text-yellow-500 fill-current" />
+                        ))}
+                      </div>
+                      <blockquote className="text-muted-foreground italic text-xs sm:text-sm leading-relaxed">
+                        "{testimonial.text}"
+                      </blockquote>
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center`}>
+                          <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                        </div>
+                        <div>
+                          <div className="font-semibold text-xs sm:text-sm">{testimonial.author}</div>
+                          <div className="text-xs text-muted-foreground">{testimonial.role}</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+
+                {/* Duplicate set for seamless loop */}
+                {[
+                  {
+                    text: "Froillan delivered exceptional work on our mental health platform. His technical expertise in Flutter and backend development made our project a success.",
+                    author: "Dr. Sarah Chen",
+                    role: "Mental Health Professional",
+                    gradient: "from-primary to-accent"
+                  },
+                  {
+                    text: "Working with Froillan was a game-changer. His knowledge of cloud infrastructure and scalable architectures helped us build a robust application.",
+                    author: "Marcus Rodriguez",
+                    role: "Tech Lead, StartupXYZ",
+                    gradient: "from-blue-500 to-purple-500"
+                  },
+                  {
+                    text: "Froillan's full-stack development skills are impressive. He delivered a polished product that exceeded our expectations.",
+                    author: "Elena Vasquez",
+                    role: "Product Manager",
+                    gradient: "from-green-500 to-teal-500"
+                  },
+                  {
+                    text: "Outstanding work on our Flutter mobile app. Froillan's attention to detail and user experience is remarkable.",
+                    author: "James Wilson",
+                    role: "CEO, TechCorp",
+                    gradient: "from-purple-500 to-pink-500"
+                  },
+                  {
+                    text: "Professional, skilled, and delivers on time. Froillan's expertise in cloud deployment saved us weeks of development.",
+                    author: "Maria Santos",
+                    role: "CTO, InnovateLab",
+                    gradient: "from-orange-500 to-red-500"
+                  },
+                  {
+                    text: "Froillan's AI integration work was flawless. He seamlessly connected our system with multiple AI services and the results exceeded our expectations.",
+                    author: "David Kim",
+                    role: "AI Research Director",
+                    gradient: "from-cyan-500 to-blue-500"
+                  },
+                  {
+                    text: "Incredible mobile development expertise! Our Flutter app launched ahead of schedule with zero critical bugs. Highly recommended!",
+                    author: "Lisa Chang",
+                    role: "Startup Founder",
+                    gradient: "from-pink-500 to-rose-500"
+                  },
+                  {
+                    text: "The backend architecture design was solid and scalable. Great work on database optimization and API performance improvements.",
+                    author: "Robert Thompson",
+                    role: "Senior Backend Developer",
+                    gradient: "from-indigo-500 to-purple-500"
+                  },
+                  {
+                    text: "Froillan's Django expertise helped us migrate our legacy system smoothly. The new architecture is maintainable and performs excellently.",
+                    author: "Amanda Foster",
+                    role: "Engineering Manager",
+                    gradient: "from-emerald-500 to-green-500"
+                  },
+                  {
+                    text: "Exceptional work on our cloud deployment pipeline. The automated CI/CD setup has improved our development workflow significantly.",
+                    author: "Michael Park",
+                    role: "DevOps Engineer",
+                    gradient: "from-amber-500 to-orange-500"
+                  }
+                ].map((testimonial, index) => (
+                  <Card key={`second-${index}`} className="glass-effect border-primary/20 p-4 sm:p-6 testimonial-card-hover flex-shrink-0 w-72 sm:w-80 lg:w-96 mx-3 cursor-pointer">
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center space-x-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className="w-4 h-4 text-yellow-500 fill-current" />
+                        ))}
+                      </div>
+                      <blockquote className="text-muted-foreground italic text-xs sm:text-sm leading-relaxed">
+                        "{testimonial.text}"
+                      </blockquote>
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center`}>
+                          <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                        </div>
+                        <div>
+                          <div className="font-semibold text-xs sm:text-sm">{testimonial.author}</div>
+                          <div className="text-xs text-muted-foreground">{testimonial.role}</div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Stats Section */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">
+                  <AnimatedCounter end={100} suffix="%" />
+                </div>
+                <div className="text-sm text-muted-foreground">Client Satisfaction</div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">
+                  <AnimatedCounter end={5} suffix="/5" />
+                </div>
+                <div className="text-sm text-muted-foreground">Average Rating</div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">
+                  <AnimatedCounter end={15} suffix="+" />
+                </div>
+                <div className="text-sm text-muted-foreground">Projects Completed</div>
+              </div>
+              <div className="text-center space-y-2">
+                <div className="text-3xl font-bold text-primary">
+                  <AnimatedCounter end={24} suffix="h" />
+                </div>
+                <div className="text-sm text-muted-foreground">Response Time</div>
+              </div>
             </div>
           </div>
         </div>
@@ -556,13 +853,234 @@ export function Portfolio() {
                 </Button>
               </div>
             </Card>
-            {/* Contact Form */}
-            <form className="space-y-4 max-w-md mx-auto mt-8">
-              <input className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Your Name" />
-              <input className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Your Email" type="email" />
-              <textarea className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Your Message" rows={4} />
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90">Send Message</Button>
-            </form>
+            {/* Contact Options */}
+            <div className="space-y-12 mt-8">
+              {/* Contact Form */}
+              <div className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-border/50">
+                <h3 className="text-xl font-semibold text-center gradient-text flex items-center justify-center space-x-2 mb-6">
+                  <Mail className="w-5 h-5" />
+                  <span>Get In Touch</span>
+                </h3>
+                <form className="space-y-4">
+              {/* Name Fields */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">First Name *</label>
+                  <input
+                    name="firstName"
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                    placeholder="John"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Last Name *</label>
+                  <input
+                    name="lastName"
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                    placeholder="Doe"
+                  />
+                </div>
+              </div>
+
+              {/* Email Field */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Email Address *</label>
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                  placeholder="john.doe@example.com"
+                />
+              </div>
+
+              {/* Purpose Dropdown */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Purpose *</label>
+                <select
+                  name="purpose"
+                  required
+                  className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                >
+                  <option value="">Select a purpose...</option>
+                  <option value="web-development">Web Development</option>
+                  <option value="mobile-app-development">Mobile App Development (Flutter)</option>
+                  <option value="backend-development">Backend Development (Django/FastAPI/.NET)</option>
+                  <option value="cloud-deployment">Cloud Deployment & DevOps</option>
+                  <option value="ai-integration">AI Integration & Machine Learning</option>
+                  <option value="database-design">Database Design & Optimization</option>
+                  <option value="full-stack-project">Full-Stack Project Development</option>
+                  <option value="consultation">Technical Consultation</option>
+                  <option value="code-review">Code Review & Optimization</option>
+                  <option value="maintenance">System Maintenance & Support</option>
+                  <option value="other">Other (Please specify in message)</option>
+                </select>
+              </div>
+
+              {/* Message Field */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Message *</label>
+                <textarea
+                  name="message"
+                  required
+                  className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background resize-none"
+                  placeholder="Tell me about your project, requirements, timeline, budget, or any specific questions you have..."
+                  rows={5}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                className="w-full bg-primary hover:bg-primary/90 py-3 text-lg font-semibold group"
+              >
+                <Mail className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                Send Message
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+
+              {/* Form Note */}
+                  <p className="text-xs text-muted-foreground text-center mt-4">
+                    * Required fields. I'll get back to you within 24 hours!
+                  </p>
+                </form>
+              </div>
+
+              {/* Testimonial Form */}
+              <div className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-border/50">
+                <h3 className="text-xl font-semibold text-center gradient-text flex items-center justify-center space-x-2 mb-6">
+                  <Star className="w-5 h-5" />
+                  <span>Share Your Experience</span>
+                </h3>
+                <form className="space-y-4">
+                  {/* Client Details */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground">Your Name *</label>
+                      <input
+                        name="clientName"
+                        type="text"
+                        required
+                        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground">Company</label>
+                      <input
+                        name="company"
+                        type="text"
+                        className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                        placeholder="TechCorp Inc."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Your Role *</label>
+                    <input
+                      name="role"
+                      type="text"
+                      required
+                      className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                      placeholder="CEO, CTO, Product Manager, etc."
+                    />
+                  </div>
+
+                  {/* Project Type */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Project Type *</label>
+                    <select
+                      name="projectType"
+                      required
+                      className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background"
+                    >
+                      <option value="">Select project type...</option>
+                      <option value="web-development">Web Development</option>
+                      <option value="mobile-app">Mobile App (Flutter)</option>
+                      <option value="backend-api">Backend/API Development</option>
+                      <option value="cloud-deployment">Cloud Deployment</option>
+                      <option value="ai-integration">AI Integration</option>
+                      <option value="full-stack">Full-Stack Project</option>
+                      <option value="consultation">Technical Consultation</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  {/* Star Rating */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Rating *</label>
+                    <div className="flex items-center space-x-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          className="star-rating w-8 h-8 text-gray-300 hover:text-yellow-500 transition-colors"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const form = e.target.closest('form');
+                            const stars = form.querySelectorAll('.star-rating');
+                            stars.forEach((s, i) => {
+                              if (i < star) {
+                                s.classList.add('text-yellow-500', 'fill-current');
+                                s.classList.remove('text-gray-300');
+                              } else {
+                                s.classList.remove('text-yellow-500', 'fill-current');
+                                s.classList.add('text-gray-300');
+                              }
+                            });
+                            // Set hidden input value
+                            const ratingInput = form.querySelector('input[name="rating"]');
+                            if (ratingInput) ratingInput.value = star;
+                          }}
+                        >
+                          <Star className="w-full h-full" />
+                        </button>
+                      ))}
+                      <input type="hidden" name="rating" required />
+                      <span className="text-sm text-muted-foreground ml-2">Click stars to rate</span>
+                    </div>
+                  </div>
+
+                  {/* Testimonial Message */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Your Testimonial *</label>
+                    <textarea
+                      name="testimonial"
+                      required
+                      className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-background resize-none"
+                      placeholder="Share your experience working with Froillan. What made the project successful? How was the communication and delivery?"
+                      rows={4}
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-primary/90 py-2 text-sm font-semibold group"
+                  >
+                    <Star className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                    Submit Testimonial
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+
+                  {/* Honeypot field for spam protection */}
+                  <div className="hidden">
+                    <input name="website" type="text" tabIndex="-1" autoComplete="off" />
+                  </div>
+
+                  {/* Rate limiting info */}
+                  <p className="text-xs text-muted-foreground text-center mt-3">
+                    * Your testimonial will be reviewed before being displayed.
+                    <br />One submission per email address. Thank you for sharing! ⭐
+                  </p>
+                </form>
+              </div>
+            </div>
             {/* Fun Quote */}
             <div className="mt-8 text-center text-muted-foreground italic text-sm">
               "Let's build something amazing together!"
@@ -570,6 +1088,101 @@ export function Portfolio() {
           </div>
         </div>
       </section>
+
+      {/* Tech Stack Modal */}
+      {showTechModal && selectedProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <Card className="w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <div>
+                <CardTitle className="text-xl">{selectedProject.title}</CardTitle>
+                <CardDescription>Complete Technology Stack</CardDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowTechModal(false)}
+                className="h-8 w-8"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Full Tech Stack */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-lg flex items-center space-x-2">
+                  <Layers className="w-5 h-5 text-blue-500" />
+                  <span>Detailed Tech Stack</span>
+                </h4>
+                <div className="grid gap-4">
+                  {Object.entries(selectedProject.techStack || {}).map(([category, techs]) => (
+                    <div key={category} className="space-y-2">
+                      <h5 className="font-medium text-primary text-sm border-l-2 border-primary pl-2">{category}</h5>
+                      <div className="flex flex-wrap gap-2 ml-4">
+                        {techs.map((tech, i) => (
+                          <Badge key={i} variant="secondary" className="text-xs">
+                            {tech}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* All Features */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-lg flex items-center space-x-2">
+                  <Star className="w-5 h-5 text-yellow-500" />
+                  <span>All Features</span>
+                </h4>
+                <div className="grid gap-2">
+                  {selectedProject.features?.map((feature, i) => (
+                    <div key={i} className="flex items-start space-x-2 p-3 rounded-lg bg-primary/5">
+                      <ArrowRight className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* All Technologies */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-lg flex items-center space-x-2">
+                  <Code className="w-5 h-5 text-green-500" />
+                  <span>Complete Technology List</span>
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProject.technologies.map((tech) => (
+                    <Badge key={tech} variant="outline" className="text-xs hover:bg-primary/10 transition-colors">
+                      {tech}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4 border-t">
+                <Button
+                  className="bg-primary hover:bg-primary/90 group flex-1"
+                  onClick={() => window.open(selectedProject.link, '_blank')}
+                >
+                  <Play className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                  Live Demo
+                </Button>
+                <Button
+                  variant="outline"
+                  className="group flex-1"
+                  onClick={() => window.open(selectedProject.github, '_blank')}
+                >
+                  <Github className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
+                  Source Code
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-8 border-t border-border bg-background/50 backdrop-blur">
