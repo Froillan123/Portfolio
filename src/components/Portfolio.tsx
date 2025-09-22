@@ -336,7 +336,7 @@ export function Portfolio() {
                   <MessageCircle className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                   Get In Touch
                 </Button>
-                <Button variant="ghost" className="group">
+                <Button variant="ghost" className="group" onClick={() => window.open('/resume/Froillan_Kim_B_Edem_resume.pdf', '_blank')}>
                   <Download className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                   Resume
                 </Button>
@@ -821,7 +821,7 @@ export function Portfolio() {
             </div>
             {/* Resume and Availability */}
             <div className="flex flex-col md:flex-row gap-4 justify-center items-center mt-4">
-              <Button variant="outline" className="group" onClick={() => window.open('/resume.pdf', '_blank')}>
+              <Button variant="outline" className="group" onClick={() => window.open('/resume/Froillan_Kim_B_Edem_resume.pdf', '_blank')}>
                 <Download className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                 Download Resume
               </Button>
