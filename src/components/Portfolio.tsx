@@ -423,7 +423,7 @@ export function Portfolio() {
             <Card className="glass-effect border-primary/20 p-8">
               <div className="prose prose-lg mx-auto text-muted-foreground space-y-6">
                 <p className="text-lg leading-relaxed">
-                  🎓 A final-year BSIT student at <span className="text-primary font-semibold">University of Cebu - Main</span> with extensive hands-on experience in full-stack development and cloud infrastructure.
+                  🎓 A BSIT graduate from <span className="text-primary font-semibold">University of Cebu - Main</span> with extensive hands-on experience in full-stack development and cloud infrastructure.
                   I specialize in creating robust backend solutions with Django and FastAPI, while maintaining a strong command of front-end technologies, system architecture, and database management.
                 </p>
                 <p className="text-lg leading-relaxed">
@@ -1022,7 +1022,8 @@ export function Portfolio() {
                           className="star-rating w-8 h-8 text-gray-300 hover:text-yellow-500 transition-colors"
                           onClick={(e) => {
                             e.preventDefault();
-                            const form = e.target.closest('form');
+                            const form = (e.target as HTMLElement).closest('form');
+                            if (!form) return;
                             const stars = form.querySelectorAll('.star-rating');
                             stars.forEach((s, i) => {
                               if (i < star) {
@@ -1034,8 +1035,8 @@ export function Portfolio() {
                               }
                             });
                             // Set hidden input value
-                            const ratingInput = form.querySelector('input[name="rating"]');
-                            if (ratingInput) ratingInput.value = star;
+                            const ratingInput = form.querySelector('input[name="rating"]') as HTMLInputElement;
+                            if (ratingInput) ratingInput.value = star.toString();
                           }}
                         >
                           <Star className="w-full h-full" />
@@ -1070,7 +1071,7 @@ export function Portfolio() {
 
                   {/* Honeypot field for spam protection */}
                   <div className="hidden">
-                    <input name="website" type="text" tabIndex="-1" autoComplete="off" />
+                    <input name="website" type="text" tabIndex={-1} autoComplete="off" />
                   </div>
 
                   {/* Rate limiting info */}
@@ -1119,7 +1120,7 @@ export function Portfolio() {
                     <div key={category} className="space-y-2">
                       <h5 className="font-medium text-primary text-sm border-l-2 border-primary pl-2">{category}</h5>
                       <div className="flex flex-wrap gap-2 ml-4">
-                        {techs.map((tech, i) => (
+                        {(techs as string[]).map((tech, i) => (
                           <Badge key={i} variant="secondary" className="text-xs">
                             {tech}
                           </Badge>
