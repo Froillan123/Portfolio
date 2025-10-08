@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useToast } from "@/hooks/use-toast";
 import {
   Menu, X, Github, Linkedin, Mail, ExternalLink,
   Code, Database, Server, Smartphone, Globe,
@@ -12,7 +13,7 @@ import {
   ArrowRight, Download, Play, Eye,
   Home, User, FolderOpen, MessageCircle,
   Code2, Coffee, ChevronLeft, ChevronRight,
-  Info, XIcon
+  Info, XIcon, Copy, Check
 } from "lucide-react";
 import faceofmindImage from "@/assets/faceofmind-project.jpg";
 
@@ -185,6 +186,10 @@ export function Portfolio() {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [showTechModal, setShowTechModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [testimonials, setTestimonials] = useState([]);
+  const [isLoadingTestimonials, setIsLoadingTestimonials] = useState(true);
+  const [emailCopied, setEmailCopied] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -206,12 +211,130 @@ export function Portfolio() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Load testimonials dynamically
+  useEffect(() => {
+    const loadTestimonials = async () => {
+      try {
+        // Simulate API call - replace with actual API endpoint
+        const response = await fetch('/api/testimonials');
+        if (response.ok) {
+          const data = await response.json();
+          setTestimonials(data);
+        } else {
+          // Fallback to static testimonials if API fails
+          setTestimonials([
+            {
+              text: "Froillan delivered exceptional work on our mental health platform. His technical expertise in Flutter and backend development made our project a success.",
+              author: "Dr. Sarah Chen",
+              role: "Mental Health Professional",
+              gradient: "from-primary to-accent",
+              rating: 5
+            },
+            {
+              text: "Working with Froillan was a game-changer. His knowledge of cloud infrastructure and scalable architectures helped us build a robust application.",
+              author: "Marcus Rodriguez",
+              role: "Tech Lead, StartupXYZ",
+              gradient: "from-blue-500 to-purple-500",
+              rating: 5
+            },
+            {
+              text: "Froillan's full-stack development skills are impressive. He delivered a polished product that exceeded our expectations.",
+              author: "Elena Vasquez",
+              role: "Product Manager",
+              gradient: "from-green-500 to-teal-500",
+              rating: 5
+            },
+            {
+              text: "Outstanding work on our Flutter mobile app. Froillan's attention to detail and user experience is remarkable.",
+              author: "James Wilson",
+              role: "CEO, TechCorp",
+              gradient: "from-purple-500 to-pink-500",
+              rating: 5
+            },
+            {
+              text: "Professional, skilled, and delivers on time. Froillan's expertise in cloud deployment saved us weeks of development.",
+              author: "Maria Santos",
+              role: "CTO, InnovateLab",
+              gradient: "from-orange-500 to-red-500",
+              rating: 5
+            }
+          ]);
+        }
+      } catch (error) {
+        console.log('Using fallback testimonials');
+        // Use fallback testimonials
+        setTestimonials([
+          {
+            text: "Froillan delivered exceptional work on our mental health platform. His technical expertise in Flutter and backend development made our project a success.",
+            author: "Dr. Sarah Chen",
+            role: "Mental Health Professional",
+            gradient: "from-primary to-accent",
+            rating: 5
+          },
+          {
+            text: "Working with Froillan was a game-changer. His knowledge of cloud infrastructure and scalable architectures helped us build a robust application.",
+            author: "Marcus Rodriguez",
+            role: "Tech Lead, StartupXYZ",
+            gradient: "from-blue-500 to-purple-500",
+            rating: 5
+          },
+          {
+            text: "Froillan's full-stack development skills are impressive. He delivered a polished product that exceeded our expectations.",
+            author: "Elena Vasquez",
+            role: "Product Manager",
+            gradient: "from-green-500 to-teal-500",
+            rating: 5
+          },
+          {
+            text: "Outstanding work on our Flutter mobile app. Froillan's attention to detail and user experience is remarkable.",
+            author: "James Wilson",
+            role: "CEO, TechCorp",
+            gradient: "from-purple-500 to-pink-500",
+            rating: 5
+          },
+          {
+            text: "Professional, skilled, and delivers on time. Froillan's expertise in cloud deployment saved us weeks of development.",
+            author: "Maria Santos",
+            role: "CTO, InnovateLab",
+            gradient: "from-orange-500 to-red-500",
+            rating: 5
+          }
+        ]);
+      } finally {
+        setIsLoadingTestimonials(false);
+      }
+    };
+
+    loadTestimonials();
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
     setIsMenuOpen(false);
+  };
+
+  const copyEmailToClipboard = async () => {
+    const email = "froillan.edem@gmail.com";
+    try {
+      await navigator.clipboard.writeText(email);
+      setEmailCopied(true);
+      toast({
+        title: "Email Copied! 📧",
+        description: "Email address copied to clipboard successfully!",
+        duration: 3000,
+      });
+      setTimeout(() => setEmailCopied(false), 2000);
+    } catch (err) {
+      toast({
+        title: "Copy Failed",
+        description: "Failed to copy email to clipboard. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
   };
 
   const currentYear = new Date().getFullYear();
@@ -310,7 +433,7 @@ export function Portfolio() {
               <div className="flex items-center space-x-6 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-2">
                   <Rocket className="w-5 h-5 text-primary" />
-                  <span><AnimatedCounter end={15} suffix="+" /> Projects</span>
+                  <span><AnimatedCounter end={2} suffix="+" /> Years Experience</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Cloud className="w-5 h-5 text-blue-500" />
@@ -436,8 +559,8 @@ export function Portfolio() {
                     <div className="text-sm text-muted-foreground">Technologies</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={15} suffix="+" /></div>
-                    <div className="text-sm text-muted-foreground">Projects</div>
+                    <div className="text-2xl font-bold text-primary"><AnimatedCounter end={2} suffix="+" /></div>
+                    <div className="text-sm text-muted-foreground">Years Experience</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary"><AnimatedCounter end={1000} suffix="+" /></div>
@@ -592,182 +715,67 @@ export function Portfolio() {
               </p>
             </div>
 
-            {/* Auto-Scroll Testimonials Swiper - All Devices */}
-            <div className="overflow-hidden relative">
-              <div className="flex animate-scroll-testimonials hover:animation-paused">
-                {/* First set of testimonials */}
-                {[
-                  {
-                    text: "Froillan delivered exceptional work on our mental health platform. His technical expertise in Flutter and backend development made our project a success.",
-                    author: "Dr. Sarah Chen",
-                    role: "Mental Health Professional",
-                    gradient: "from-primary to-accent"
-                  },
-                  {
-                    text: "Working with Froillan was a game-changer. His knowledge of cloud infrastructure and scalable architectures helped us build a robust application.",
-                    author: "Marcus Rodriguez",
-                    role: "Tech Lead, StartupXYZ",
-                    gradient: "from-blue-500 to-purple-500"
-                  },
-                  {
-                    text: "Froillan's full-stack development skills are impressive. He delivered a polished product that exceeded our expectations.",
-                    author: "Elena Vasquez",
-                    role: "Product Manager",
-                    gradient: "from-green-500 to-teal-500"
-                  },
-                  {
-                    text: "Outstanding work on our Flutter mobile app. Froillan's attention to detail and user experience is remarkable.",
-                    author: "James Wilson",
-                    role: "CEO, TechCorp",
-                    gradient: "from-purple-500 to-pink-500"
-                  },
-                  {
-                    text: "Professional, skilled, and delivers on time. Froillan's expertise in cloud deployment saved us weeks of development.",
-                    author: "Maria Santos",
-                    role: "CTO, InnovateLab",
-                    gradient: "from-orange-500 to-red-500"
-                  },
-                  {
-                    text: "Froillan's AI integration work was flawless. He seamlessly connected our system with multiple AI services and the results exceeded our expectations.",
-                    author: "David Kim",
-                    role: "AI Research Director",
-                    gradient: "from-cyan-500 to-blue-500"
-                  },
-                  {
-                    text: "Incredible mobile development expertise! Our Flutter app launched ahead of schedule with zero critical bugs. Highly recommended!",
-                    author: "Lisa Chang",
-                    role: "Startup Founder",
-                    gradient: "from-pink-500 to-rose-500"
-                  },
-                  {
-                    text: "The backend architecture design was solid and scalable. Great work on database optimization and API performance improvements.",
-                    author: "Robert Thompson",
-                    role: "Senior Backend Developer",
-                    gradient: "from-indigo-500 to-purple-500"
-                  },
-                  {
-                    text: "Froillan's Django expertise helped us migrate our legacy system smoothly. The new architecture is maintainable and performs excellently.",
-                    author: "Amanda Foster",
-                    role: "Engineering Manager",
-                    gradient: "from-emerald-500 to-green-500"
-                  },
-                  {
-                    text: "Exceptional work on our cloud deployment pipeline. The automated CI/CD setup has improved our development workflow significantly.",
-                    author: "Michael Park",
-                    role: "DevOps Engineer",
-                    gradient: "from-amber-500 to-orange-500"
-                  }
-                ].map((testimonial, index) => (
-                  <Card key={`first-${index}`} className="glass-effect border-primary/20 p-4 sm:p-6 testimonial-card-hover flex-shrink-0 w-72 sm:w-80 lg:w-96 mx-3 cursor-pointer">
-                    <CardContent className="space-y-3">
-                      <div className="flex items-center space-x-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star key={star} className="w-4 h-4 text-yellow-500 fill-current" />
-                        ))}
-                      </div>
-                      <blockquote className="text-muted-foreground italic text-xs sm:text-sm leading-relaxed">
-                        "{testimonial.text}"
-                      </blockquote>
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center`}>
-                          <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                        </div>
-                        <div>
-                          <div className="font-semibold text-xs sm:text-sm">{testimonial.author}</div>
-                          <div className="text-xs text-muted-foreground">{testimonial.role}</div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-
-                {/* Duplicate set for seamless loop */}
-                {[
-                  {
-                    text: "Froillan delivered exceptional work on our mental health platform. His technical expertise in Flutter and backend development made our project a success.",
-                    author: "Dr. Sarah Chen",
-                    role: "Mental Health Professional",
-                    gradient: "from-primary to-accent"
-                  },
-                  {
-                    text: "Working with Froillan was a game-changer. His knowledge of cloud infrastructure and scalable architectures helped us build a robust application.",
-                    author: "Marcus Rodriguez",
-                    role: "Tech Lead, StartupXYZ",
-                    gradient: "from-blue-500 to-purple-500"
-                  },
-                  {
-                    text: "Froillan's full-stack development skills are impressive. He delivered a polished product that exceeded our expectations.",
-                    author: "Elena Vasquez",
-                    role: "Product Manager",
-                    gradient: "from-green-500 to-teal-500"
-                  },
-                  {
-                    text: "Outstanding work on our Flutter mobile app. Froillan's attention to detail and user experience is remarkable.",
-                    author: "James Wilson",
-                    role: "CEO, TechCorp",
-                    gradient: "from-purple-500 to-pink-500"
-                  },
-                  {
-                    text: "Professional, skilled, and delivers on time. Froillan's expertise in cloud deployment saved us weeks of development.",
-                    author: "Maria Santos",
-                    role: "CTO, InnovateLab",
-                    gradient: "from-orange-500 to-red-500"
-                  },
-                  {
-                    text: "Froillan's AI integration work was flawless. He seamlessly connected our system with multiple AI services and the results exceeded our expectations.",
-                    author: "David Kim",
-                    role: "AI Research Director",
-                    gradient: "from-cyan-500 to-blue-500"
-                  },
-                  {
-                    text: "Incredible mobile development expertise! Our Flutter app launched ahead of schedule with zero critical bugs. Highly recommended!",
-                    author: "Lisa Chang",
-                    role: "Startup Founder",
-                    gradient: "from-pink-500 to-rose-500"
-                  },
-                  {
-                    text: "The backend architecture design was solid and scalable. Great work on database optimization and API performance improvements.",
-                    author: "Robert Thompson",
-                    role: "Senior Backend Developer",
-                    gradient: "from-indigo-500 to-purple-500"
-                  },
-                  {
-                    text: "Froillan's Django expertise helped us migrate our legacy system smoothly. The new architecture is maintainable and performs excellently.",
-                    author: "Amanda Foster",
-                    role: "Engineering Manager",
-                    gradient: "from-emerald-500 to-green-500"
-                  },
-                  {
-                    text: "Exceptional work on our cloud deployment pipeline. The automated CI/CD setup has improved our development workflow significantly.",
-                    author: "Michael Park",
-                    role: "DevOps Engineer",
-                    gradient: "from-amber-500 to-orange-500"
-                  }
-                ].map((testimonial, index) => (
-                  <Card key={`second-${index}`} className="glass-effect border-primary/20 p-4 sm:p-6 testimonial-card-hover flex-shrink-0 w-72 sm:w-80 lg:w-96 mx-3 cursor-pointer">
-                    <CardContent className="space-y-3">
-                      <div className="flex items-center space-x-1">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star key={star} className="w-4 h-4 text-yellow-500 fill-current" />
-                        ))}
-                      </div>
-                      <blockquote className="text-muted-foreground italic text-xs sm:text-sm leading-relaxed">
-                        "{testimonial.text}"
-                      </blockquote>
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center`}>
-                          <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-                        </div>
-                        <div>
-                          <div className="font-semibold text-xs sm:text-sm">{testimonial.author}</div>
-                          <div className="text-xs text-muted-foreground">{testimonial.role}</div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+            {/* Dynamic Testimonials Section */}
+            {isLoadingTestimonials ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <span className="ml-3 text-muted-foreground">Loading testimonials...</span>
               </div>
-            </div>
+            ) : (
+              <div className="overflow-hidden relative">
+                <div className="flex animate-scroll-testimonials hover:animation-paused">
+                  {/* First set of testimonials */}
+                  {testimonials.map((testimonial, index) => (
+                    <Card key={`first-${index}`} className="glass-effect border-primary/20 p-4 sm:p-6 testimonial-card-hover flex-shrink-0 w-72 sm:w-80 lg:w-96 mx-3 cursor-pointer">
+                      <CardContent className="space-y-3">
+                        <div className="flex items-center space-x-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className={`w-4 h-4 ${star <= (testimonial.rating || 5) ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
+                          ))}
+                        </div>
+                        <blockquote className="text-muted-foreground italic text-xs sm:text-sm leading-relaxed">
+                          "{testimonial.text}"
+                        </blockquote>
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center`}>
+                            <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-xs sm:text-sm">{testimonial.author}</div>
+                            <div className="text-xs text-muted-foreground">{testimonial.role}</div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+
+                  {/* Duplicate set for seamless loop */}
+                  {testimonials.map((testimonial, index) => (
+                    <Card key={`second-${index}`} className="glass-effect border-primary/20 p-4 sm:p-6 testimonial-card-hover flex-shrink-0 w-72 sm:w-80 lg:w-96 mx-3 cursor-pointer">
+                      <CardContent className="space-y-3">
+                        <div className="flex items-center space-x-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className={`w-4 h-4 ${star <= (testimonial.rating || 5) ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
+                          ))}
+                        </div>
+                        <blockquote className="text-muted-foreground italic text-xs sm:text-sm leading-relaxed">
+                          "{testimonial.text}"
+                        </blockquote>
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center`}>
+                            <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-xs sm:text-sm">{testimonial.author}</div>
+                            <div className="text-xs text-muted-foreground">{testimonial.role}</div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Stats Section */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
@@ -785,9 +793,9 @@ export function Portfolio() {
               </div>
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-primary">
-                  <AnimatedCounter end={15} suffix="+" />
+                  <AnimatedCounter end={2} suffix="+" />
                 </div>
-                <div className="text-sm text-muted-foreground">Projects Completed</div>
+                <div className="text-sm text-muted-foreground">Years Experience</div>
               </div>
               <div className="text-center space-y-2">
                 <div className="text-3xl font-bold text-primary">
@@ -830,11 +838,21 @@ export function Portfolio() {
             {/* Contact Buttons */}
             <Card className="glass-effect border-primary/20 p-8 mt-6">
               <div className="grid md:grid-cols-3 gap-6">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 group h-16">
-                  <Mail className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+                <Button 
+                  size="lg" 
+                  className="bg-primary hover:bg-primary/90 group h-16"
+                  onClick={copyEmailToClipboard}
+                >
+                  {emailCopied ? (
+                    <Check className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform text-green-400" />
+                  ) : (
+                    <Copy className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform" />
+                  )}
                   <div className="text-left">
                     <div className="font-semibold">froillan.edem@gmail.com</div>
-                    <div className="text-xs opacity-80">Email Me</div>
+                    <div className="text-xs opacity-80">
+                      {emailCopied ? "Copied!" : "Click to Copy"}
+                    </div>
                   </div>
                 </Button>
                 <Button size="lg" variant="outline" className="group h-16" onClick={() => window.open('https://www.linkedin.com/in/froillan-kim-b-edem-5b591b252/', '_blank')}>
