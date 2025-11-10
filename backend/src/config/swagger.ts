@@ -231,7 +231,7 @@ const swaggerDefinition: SwaggerDefinition = {
           liveUrl: {
             type: 'string',
             format: 'uri',
-            example: 'https://faceofmind.vercel.app'
+            example: 'https://www.faceofmind.it.com'
           },
           githubUrl: {
             type: 'string',

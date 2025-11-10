@@ -78,7 +78,7 @@ const projects = [
       "DevOps": ["Google Cloud Run", "Google Cloud Storage", "Redis"]
     },
     technologies: [".NET C#", "Flutter", "React", "Flask", "PostgreSQL", "Firebase", "Google Cloud", "Redis", "Gemini AI"],
-    link: "https://faceofmind.vercel.app/",
+    link: "https://www.faceofmind.it.com/",
     github: "https://github.com/Froillan123/Faceofmind.git",
     icon: Brain
   }

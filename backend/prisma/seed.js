@@ -48,7 +48,7 @@ async function main() {
                 'Firebase', 'Google Cloud', 'Redis', 'Gemini AI'
             ]),
             imageUrl: '/assets/faceofmind-project.jpg',
-            liveUrl: 'https://faceofmind.vercel.app/',
+            liveUrl: 'https://www.faceofmind.it.com/',
             githubUrl: 'https://github.com/Froillan123/Faceofmind.git',
             visible: true,
             featured: true,
