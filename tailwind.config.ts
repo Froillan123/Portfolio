@@ -18,6 +18,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -52,9 +55,6 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				'section-bg': 'hsl(var(--section-bg))',
-				'tech-badge': 'hsl(var(--tech-badge))',
-				'project-card': 'hsl(var(--project-card))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -72,6 +72,14 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
+				marquee: {
+					from: { transform: 'translateX(0)' },
+					to: { transform: 'translateX(-50%)' },
+				},
+				'marquee-reverse': {
+					from: { transform: 'translateX(-50%)' },
+					to: { transform: 'translateX(0)' },
+				},
 				'accordion-down': {
 					from: {
 						height: '0'
@@ -90,6 +98,8 @@ export default {
 				}
 			},
 			animation: {
+				marquee: 'marquee var(--marquee-duration, 40s) linear infinite',
+				'marquee-reverse': 'marquee-reverse var(--marquee-duration, 40s) linear infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			}
