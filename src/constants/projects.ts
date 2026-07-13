@@ -21,19 +21,19 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "FaceofMind",
-    subtitle: "Mental wellness platform · proprietary",
+    subtitle: "Mental Wellness & Daily Mood Companion · Live",
     description:
-      "Founder-led product for AI-assisted mental wellness, mood support, and professional care pathways. Live in production — implementation and architecture are confidential.",
+      "Founder and software architect of FaceofMind, a personal self-care and emotional wellness companion app. The platform brings emotional wellness tools and structured mood check-ins together in a delightful, engaging space, bridging the gap between daily self-care and professional care.",
     image: faceofmindImage,
     link: "https://www.faceofmind.it.com/",
     icon: Brain,
     proprietary: true,
     highlights: [
-      "User-facing wellness companion (mobile & web)",
-      "Mood tracking and guided wellness experiences",
-      "Connections to licensed mental health professionals",
-      "Live online and still maintained",
+      "Patient App: Multi-platform mobile app featuring daily mood logs, virtual pet progression, and milestone quests to make self-care fun.",
+      "Clinician Portal: Dashboard for licensed psychologists to review patient self-reported emotional trends between sessions.",
+      "Interactive Care: Integrated video, chat, and appointment scheduling designed to keep check-ins seamless and convenient.",
+      "Full-Stack Architecture: Programmed in Flutter and React, supported by Python (FastAPI) and C#/.NET Core backends on Google Cloud.",
     ],
-    technologies: ["Mobile", "Web", "Cloud", "AI"],
+    technologies: ["Flutter", "React", "Python (FastAPI)", ".NET Core", "GCP", "PostgreSQL"],
   },
 ];

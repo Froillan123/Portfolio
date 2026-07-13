@@ -2,7 +2,7 @@
 
 ## About
 
-This is the personal portfolio of **Froillan Kim B. Edem** — Full Stack Developer & Flutter Android Developer.
+This is the personal portfolio of **Froillan Kim B. Edem** | Founder & Software Architect.
 
 ## Getting Started
 

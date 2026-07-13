@@ -2,12 +2,12 @@ export const profile = {
   name: "Froillan Kim B. Edem",
   shortName: "F.K. Edem",
   imageUrl: "/lovable-uploads/21db6910-0c88-42aa-8fa7-db9f3111b50f.png",
-  title: "Software Engineer",
+  title: "Founder & Software Architect",
   /** One line under the name in the hero */
-  tagline: "B.S. IT · University of Cebu · 2026",
+  tagline: "Founder & Software Architect of FaceofMind",
   /** Hero supporting paragraph — keep factual, no meta jokes */
-  bio: "I build mobile and web software. Most of my experience comes from FaceofMind, a live wellness app I founded and still develop—Flutter, React, Python, and .NET on Google Cloud.",
-  education: "B.S. Information Technology — University of Cebu (2026)",
+  bio: "I am the founder and software architect of FaceofMind, an emotional wellness companion app. I design and build full-stack product architectures across mobile apps, web dashboards, and backend services using Flutter, React, Python, and .NET Core.",
+  education: "B.S. Information Technology, University of Cebu (2026)",
   educationDetail: "Bachelor of Science in Information Technology, Software Engineering",
   school: "University of Cebu",
   schoolDates: "Aug 2022 – Mar 2026",
@@ -17,29 +17,30 @@ export const profile = {
   website: "https://www.faceofmind.it.com/",
   resumePath: "/resume/Froillan_Kim_B_Edem_resume.pdf",
   stats: [
-    { label: "Education", value: "B.S. IT · 2026" },
-    { label: "Current work", value: "FaceofMind" },
-    { label: "Looking for", value: "Junior SWE roles" },
+    { label: "Flagship App", value: "FaceofMind" },
+    { label: "Primary Stack", value: "Flutter · React · Python · .NET" },
+    { label: "Alma Mater", value: "University of Cebu" },
   ],
 } as const;
 
 /** Hero checkmarks — each line adds something new */
 export const heroHighlights = [
-  "Full-stack: mobile (Flutter), web (React), APIs (Python / .NET)",
-  "Founder of FaceofMind — live product",
-  "Open to junior software engineering roles",
+  "Founder & Software Architect of FaceofMind (Emotional Wellness App)",
+  "Full-stack engineering: Flutter (Mobile), React (Web), Python & .NET (APIs)",
+  "Delightful user experiences focusing on daily mental well-being",
+  "Production deployment and ongoing live application maintenance",
 ] as const;
 
 export const aboutJourney = [
-  "Graduated 2026 with a software engineering focus at the University of Cebu.",
-  "Built FaceofMind from coursework into a production app I still maintain.",
-  "Interested in teams where I can grow on real products and code reviews.",
+  "Founded FaceofMind, designing its intuitive interfaces and programming its core features.",
+  "Designed gamified self-care systems like virtual pets and garden progression metrics to enhance daily user engagement.",
+  "Graduated B.S. IT from the University of Cebu, building real production software.",
 ] as const;
 
 export const aboutExperience = {
-  role: "Founder & Software Engineer",
+  role: "Founder & Software Architect",
   company: "FaceofMind",
   period: "Jul 2025 – Present",
   summary:
-    "Mental wellness app — product direction, mobile, web portals, and backend services.",
+    "Product architecture, cross-platform mobile development, psychologist web dashboards, and backend database integrations.",
 } as const;

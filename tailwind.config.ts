@@ -19,7 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				sans: ['"Plus Jakarta Sans"', '"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				display: ['"Sora"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -95,13 +96,18 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				float: {
+					'0%, 100%': { transform: 'translateY(0px) translateX(0px) scale(1)' },
+					'50%': { transform: 'translateY(-15px) translateX(5px) scale(1.05)', opacity: '0.4' }
 				}
 			},
 			animation: {
 				marquee: 'marquee var(--marquee-duration, 40s) linear infinite',
 				'marquee-reverse': 'marquee-reverse var(--marquee-duration, 40s) linear infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				float: 'float 6s ease-in-out infinite'
 			}
 		}
 	},

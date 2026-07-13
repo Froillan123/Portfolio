@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 
 const titles = [
-  "Software Engineer",
-  "Backend Systems Specialist",
-  "Cloud Infrastructure Architect",
-  "AI/ML Engineer",
-  "DevOps & SRE Practitioner"
+  "Founder & Software Architect",
+  "Full-Stack Product Builder",
+  "Mobile App Creator",
+  "Backend & Cloud Engineer"
 ];
 
 export function TypewriterLoop() {

@@ -33,7 +33,7 @@ export const skillDepthTiers: SkillDepthTier[] = [
     id: "strong",
     title: "Strong",
     description:
-      "Daily drivers on FaceofMind — mobile app, web portals, Python APIs, .NET services, GCP, and CI.",
+      "Daily drivers on FaceofMind: mobile app, web portals, Python APIs, .NET services, GCP, and CI.",
     items: [
       { name: "Python", icon: "python" },
       { name: "TypeScript / JavaScript", icon: "typescript" },
@@ -52,7 +52,7 @@ export const skillDepthTiers: SkillDepthTier[] = [
   {
     id: "familiar",
     title: "Familiar",
-    description: "Production features I’ve shipped — AI/RAG and targeted AWS APIs.",
+    description: "Production features I’ve shipped: AI/RAG and targeted AWS APIs.",
     items: [
       { name: "Gemini API", icon: "googlegemini" },
       { name: "LangChain", icon: "langchain" },

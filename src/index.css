@@ -84,10 +84,24 @@
   .safe-top {
     padding-top: max(1rem, env(safe-area-inset-top));
   }
-}
 
-@layer utilities {
   .text-gradient {
     @apply bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent;
+  }
+
+  .text-gradient-electric {
+    @apply bg-gradient-to-r from-violet-400 via-fuchsia-500 to-indigo-400 bg-clip-text text-transparent;
+  }
+
+  .glass-panel {
+    @apply bg-card/30 backdrop-blur-xl border border-border/40;
+  }
+
+  .neon-glow-indigo {
+    box-shadow: 0 0 30px -5px rgba(99, 102, 241, 0.15);
+  }
+
+  .neon-glow-fuchsia {
+    box-shadow: 0 0 30px -5px rgba(217, 70, 239, 0.15);
   }
 }

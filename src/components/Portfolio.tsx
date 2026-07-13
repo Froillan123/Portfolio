@@ -5,6 +5,7 @@ import { ContactSection } from "@/components/portfolio/ContactSection";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
 import { SkillsSection } from "@/components/portfolio/SkillsSection";
+import { Chatbot } from "@/components/Chatbot";
 import { sectionIds } from "@/constants/navigationItems";
 import { useActiveSection } from "@/hooks/use-active-section";
 
@@ -22,6 +23,7 @@ export function Portfolio() {
         <ContactSection />
       </main>
       <SiteFooter />
+      <Chatbot />
     </div>
   );
 }

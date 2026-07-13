@@ -3,18 +3,18 @@ export const chatbotResponses: { [key: string]: string } = {
   hello: "Hi there! What would you like to know?",
   hey: "Hey! What can I help you with?",
   about:
-    "I'm Froillan Kim B. Edem — B.S. IT graduate (University of Cebu, 2026) and software engineer. I build FaceofMind, a live wellness app (mobile, web, backend). Open to junior SWE roles.",
+    "I'm Froillan Kim B. Edem, B.S. IT graduate (University of Cebu, 2026), Founder and Software Architect of FaceofMind. I design and build full-stack architectures, mobile apps, web dashboards, and backend services.",
   skills:
-    "Strong (from FaceofMind): Python, TypeScript, React, Flutter, FastAPI, C#/.NET, GCP, PostgreSQL, Docker, Redis, Tailwind, GitHub Actions. Familiar: Gemini, LangChain, RAG, AWS Rekognition. Exposed: K8s, Terraform, AWS, MongoDB, Firebase.",
+    "Strong (from FaceofMind): Flutter, React, Python (FastAPI), C#/.NET Core, TypeScript, PostgreSQL, Google Cloud, Docker, Redis, Tailwind CSS. Familiar: Gemini API, LangChain. Exposed: AWS, MongoDB, Firebase.",
   projects:
-    "My main project is FaceofMind — a mental wellness app I founded and still build. Public info is at https://www.faceofmind.it.com/ (no internal architecture on this portfolio).",
+    "My main project is FaceofMind, an emotional wellness and daily mood companion app. Check out the live platform at https://www.faceofmind.it.com/.",
   faceofmind:
-    "FaceofMind is the wellness app I founded. It's live at https://www.faceofmind.it.com/. I don't share proprietary architecture here — ask me in an interview about what I can discuss.",
+    "FaceofMind is a personal emotional wellness and daily self-care companion app that I founded and developed. It features emotional tracking loggers, gamified check-ins (virtual pets and gardens), and connections to licensed psychologists.",
   experience:
-    "Fresh graduate (2026) with hands-on work since 2023 — coursework, capstone, and founding FaceofMind. Open to junior software engineering roles.",
+    "I have been writing software since 2023, and I founded FaceofMind in 2025. I design and build full-stack architectures using Flutter, React, Python, and C#.",
   contact:
     "Email: froillan.edem@gmail.com · LinkedIn: https://www.linkedin.com/in/froillan-kim-b-edem-5b591b252/",
-  email: "froillan.edem@gmail.com — happy to hear from you.",
+  email: "froillan.edem@gmail.com, feel free to reach out.",
   github: "https://github.com/Froillan123",
   resume: "Download my resume from the Resume button in the hero or contact section.",
   help: "Ask about skills, projects, FaceofMind, experience, contact, or resume.",

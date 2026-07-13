@@ -30,23 +30,23 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
 
   return (
     <header className="safe-top fixed inset-x-0 top-0 z-50 px-3 pt-2 sm:px-4 sm:pt-4 md:px-6">
-      <div className="container mx-auto flex h-12 max-w-6xl items-center justify-between gap-2 rounded-xl border border-border/60 bg-background/90 px-2 shadow-sm backdrop-blur-xl sm:h-14 sm:max-w-none sm:rounded-2xl sm:px-3 sm:gap-3 md:px-4">
+      <div className="container mx-auto flex h-11 max-w-5xl items-center justify-between gap-2 rounded-full border border-border/50 bg-background/60 px-3 shadow-lg backdrop-blur-xl sm:h-12 sm:px-4 sm:gap-3">
         <button
           type="button"
           onClick={() => navigate("home")}
-          className="flex min-w-0 shrink-0 items-center gap-2 rounded-lg px-1 py-1 transition-colors hover:bg-muted/60 sm:gap-2.5"
+          className="flex min-w-0 shrink-0 items-center gap-2 rounded-full px-2 py-1 transition-colors hover:bg-muted/40 sm:gap-2.5"
         >
-          <Avatar className="size-7 border border-border sm:size-8">
+          <Avatar className="size-6 border border-border/60 sm:size-7">
             <AvatarImage src={profile.imageUrl} alt={profile.name} />
-            <AvatarFallback className="text-[10px] sm:text-xs">{initials}</AvatarFallback>
+            <AvatarFallback className="text-[9px] sm:text-xs">{initials}</AvatarFallback>
           </Avatar>
-          <span className="truncate text-xs font-semibold tracking-tight sm:text-sm">
+          <span className="truncate text-xs font-bold tracking-tight sm:text-sm font-display text-foreground/95">
             {profile.shortName}
           </span>
         </button>
 
         <nav
-          className="hidden items-center gap-0.5 rounded-full border border-border/80 bg-muted/40 p-1 xl:flex"
+          className="hidden items-center gap-0.5 rounded-full border border-border/60 bg-muted/20 p-0.5 xl:flex"
           aria-label="Primary"
         >
           {navigationItems.map((item) => {
@@ -57,9 +57,9 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
                 type="button"
                 onClick={() => navigate(item.id)}
                 className={cn(
-                  "rounded-full px-2.5 py-1.5 text-xs font-medium transition-all duration-200 lg:px-3.5 lg:text-sm",
+                  "rounded-full px-3 py-1 text-xs font-semibold tracking-wide transition-all duration-200 lg:px-4 lg:text-[13px] font-display",
                   isActive
-                    ? "bg-background text-foreground shadow-sm"
+                    ? "bg-background text-foreground shadow-sm border border-border/40"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -73,7 +73,7 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
           <ThemeToggle />
           <Button
             size="sm"
-            className="hidden rounded-full md:inline-flex"
+            className="hidden rounded-full md:inline-flex h-8 px-4 text-xs font-bold font-display"
             onClick={() => window.open(profile.resumePath, "_blank")}
           >
             Resume
