@@ -2,45 +2,32 @@ export const profile = {
   name: "Froillan Kim B. Edem",
   shortName: "F.K. Edem",
   imageUrl: "/lovable-uploads/21db6910-0c88-42aa-8fa7-db9f3111b50f.png",
-  title: "Founder & Software Architect",
-  /** One line under the name in the hero */
-  tagline: "Founder & Software Architect of FaceofMind",
-  /** Hero supporting paragraph — keep factual, no meta jokes */
-  bio: "I am the founder and software architect of FaceofMind, an emotional wellness companion app. I design and build full-stack product architectures across mobile apps, web dashboards, and backend services using Flutter, React, Python, and .NET Core.",
+  title: "Cloud / Platform & Security Engineer",
+  tagline: "I build secure, automated developer platforms on Google Cloud.",
   education: "B.S. Information Technology, University of Cebu (2026)",
-  educationDetail: "Bachelor of Science in Information Technology, Software Engineering",
-  school: "University of Cebu",
-  schoolDates: "Aug 2022 – Mar 2026",
   email: "froillan.edem@gmail.com",
-  linkedin: "https://www.linkedin.com/in/froillan-kim-b-edem-5b591b252/",
+  phone: "+63 9910522445",
+  location: "Cebu City, Philippines",
+  linkedin: "https://tinyurl.com/yc6hd2nx",
   github: "https://github.com/Froillan123",
-  website: "https://www.faceofmind.it.com/",
-  resumePath: "/resume/Froillan_Kim_B_Edem_resume.pdf",
+  resumePath: "/resume/Edem, Froillan Kim B. Resume.pdf",
   stats: [
-    { label: "Flagship App", value: "FaceofMind" },
-    { label: "Primary Stack", value: "Flutter · React · Python · .NET" },
-    { label: "Alma Mater", value: "University of Cebu" },
+    { label: "Cloud Vulnerabilities Identified", value: "15+" },
+    { label: "Secret Decrypt Latency (Redis)", value: "~2ms" },
+    { label: "Config Keys Reduced", value: "30+ → 2" },
   ],
 } as const;
 
-/** Hero checkmarks — each line adds something new */
-export const heroHighlights = [
-  "Founder & Software Architect of FaceofMind (Emotional Wellness App)",
-  "Full-stack engineering: Flutter (Mobile), React (Web), Python & .NET (APIs)",
-  "Delightful user experiences focusing on daily mental well-being",
-  "Production deployment and ongoing live application maintenance",
-] as const;
-
-export const aboutJourney = [
-  "Founded FaceofMind, designing its intuitive interfaces and programming its core features.",
-  "Designed gamified self-care systems like virtual pets and garden progression metrics to enhance daily user engagement.",
-  "Graduated B.S. IT from the University of Cebu, building real production software.",
-] as const;
-
-export const aboutExperience = {
-  role: "Founder & Software Architect",
-  company: "FaceofMind",
-  period: "Jul 2025 – Present",
-  summary:
-    "Product architecture, cross-platform mobile development, psychologist web dashboards, and backend database integrations.",
+export const securityAssessment = {
+  title: "Cloud Security Intern (Authorized Assessment)",
+  company: "Philippine Real Estate Platform",
+  period: "Jan 2026 – Mar 2026",
+  ojtNote: "Client name available upon request. Completed as part of OJT internship through University of Cebu.",
+  bullets: [
+    "Identified 15+ vulnerabilities across storage permissions, IAM policies, network exposure, and database configuration",
+    "Audited public cloud storage and discovered unauthorized exposure of sensitive business and customer documents",
+    "Recommended VPC private subnet architecture and bastion host design",
+    "Authored remediation report aligned with RA 10173 (Philippine Data Privacy Act)",
+  ],
+  tags: ["Cloud Security Audit", "Cloud Storage Hardening", "VPC Architecture", "RA 10173 DPA", "IAM Least Privilege"],
 } as const;

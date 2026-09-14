@@ -74,7 +74,7 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
           <Button
             size="sm"
             className="hidden rounded-full md:inline-flex h-8 px-4 text-xs font-bold font-display"
-            onClick={() => window.open(profile.resumePath, "_blank")}
+            onClick={() => window.open(encodeURI(profile.resumePath), "_blank")}
           >
             Resume
           </Button>
@@ -125,7 +125,7 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
                 <Button
                   className="w-full rounded-full"
                   onClick={() => {
-                    window.open(profile.resumePath, "_blank");
+                    window.open(encodeURI(profile.resumePath), "_blank");
                     setOpen(false);
                   }}
                 >

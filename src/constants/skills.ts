@@ -1,81 +1,31 @@
-/** Devicon CDN — reliable fallbacks when simple-icons CDN misses a slug */
-const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
-
-export type SkillItem = {
-  name: string;
-  icon?: string;
-  iconUrl?: string;
+export type SkillGroup = {
+  category: string;
+  skills: string;
 };
 
-const LOGO_COLOR = "64748b";
-
-export function getSkillIconSrc(item: SkillItem): string | undefined {
-  if (item.iconUrl) return item.iconUrl;
-  if (item.icon) return `https://cdn.simpleicons.org/${item.icon}/${LOGO_COLOR}`;
-  return undefined;
-}
-
-export type SkillDepthId = "strong" | "familiar" | "exposed";
-
-export type SkillDepthTier = {
-  id: SkillDepthId;
-  title: string;
-  description: string;
-  items: SkillItem[];
-};
-
-/**
- * Tiers aligned to FaceofMind repo usage (Client/, Server/, infrastructure/, .github/).
- * One entry per skill — no duplicates across tiers.
- */
-export const skillDepthTiers: SkillDepthTier[] = [
+export const skillsData: SkillGroup[] = [
   {
-    id: "strong",
-    title: "Strong",
-    description:
-      "Daily drivers on FaceofMind: mobile app, web portals, Python APIs, .NET services, GCP, and CI.",
-    items: [
-      { name: "Python", icon: "python" },
-      { name: "TypeScript / JavaScript", icon: "typescript" },
-      { name: "React", icon: "react" },
-      { name: "Flutter", icon: "flutter" },
-      { name: "FastAPI", icon: "fastapi" },
-      { name: "C# / .NET", iconUrl: `${DEVICON}/csharp/csharp-original.svg` },
-      { name: "Google Cloud", icon: "googlecloud" },
-      { name: "PostgreSQL", icon: "postgresql" },
-      { name: "Docker", icon: "docker" },
-      { name: "Redis", icon: "redis" },
-      { name: "Tailwind CSS", icon: "tailwindcss" },
-      { name: "GitHub Actions", icon: "githubactions" },
-    ],
+    category: "Cloud",
+    skills: "GCP (Cloud Run, Cloud Build, KMS, IAM, VPC, Secret Manager)",
   },
   {
-    id: "familiar",
-    title: "Familiar",
-    description: "Production features I’ve shipped: AI/RAG and targeted AWS APIs.",
-    items: [
-      { name: "Gemini API", icon: "googlegemini" },
-      { name: "LangChain", icon: "langchain" },
-      { name: "RAG pipelines" },
-      {
-        name: "AWS Rekognition",
-        iconUrl: `${DEVICON}/amazonwebservices/amazonwebservices-plain-wordmark.svg`,
-      },
-    ],
+    category: "DevOps",
+    skills: "Docker, GitHub Actions, GitOps, CI/CD, dynamic matrix builds",
   },
   {
-    id: "exposed",
-    title: "Exposed",
-    description: "Present in the stack; not my main day-to-day depth yet.",
-    items: [
-      { name: "Kubernetes", icon: "kubernetes" },
-      { name: "Terraform", icon: "terraform" },
-      {
-        name: "AWS",
-        iconUrl: `${DEVICON}/amazonwebservices/amazonwebservices-plain-wordmark.svg`,
-      },
-      { name: "MongoDB", icon: "mongodb" },
-      { name: "Firebase / Firestore", icon: "firebase" },
-    ],
+    category: "Architecture",
+    skills: "Microservices, API gateway design, reverse proxy, gRPC/HTTP2, WebSockets, SSE",
+  },
+  {
+    category: "Security",
+    skills: "Zero-trust IAM, OIDC token exchange, RSA/JWT, AES-256-GCM, KMS, SOC 2-aligned",
+  },
+  {
+    category: "Languages",
+    skills: "Go (Golang), Python, C# (.NET Core), SQL, Dart, TypeScript",
+  },
+  {
+    category: "Databases",
+    skills: "PostgreSQL, Redis, MongoDB, AWS S3",
   },
 ];

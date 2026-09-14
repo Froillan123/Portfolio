@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 const titles = [
-  "Founder & Software Architect",
-  "Full-Stack Product Builder",
-  "Mobile App Creator",
-  "Backend & Cloud Engineer"
+  "Cloud / Platform Engineer",
+  "Cloud Security & Zero-Trust Specialist",
+  "GitOps & CI/CD Pipeline Architect",
+  "Go & Backend Systems Developer",
 ];
 
 export function TypewriterLoop() {
@@ -20,7 +20,7 @@ export function TypewriterLoop() {
           setDisplayed(titles[index].slice(0, displayed.length + 1));
         }, 40);
       } else {
-        timeout = setTimeout(() => setTyping(false), 800);
+        timeout = setTimeout(() => setTyping(false), 1200);
       }
     } else {
       if (displayed.length > 0) {
@@ -41,4 +41,3 @@ export function TypewriterLoop() {
     </div>
   );
 }
-
