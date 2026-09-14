@@ -28,7 +28,7 @@ export function ExperienceSection() {
                     {securityAssessment.title}
                   </CardTitle>
                   <p className="text-xs font-semibold text-primary mt-0.5">
-                    {securityAssessment.company} <span className="text-muted-foreground/60 mx-1">|</span> <span className="text-muted-foreground font-normal">{securityAssessment.period}</span>
+                    {securityAssessment.roleContext} <span className="text-muted-foreground/60 mx-1">·</span> <span className="text-muted-foreground font-normal">{securityAssessment.company} ({securityAssessment.period})</span>
                   </p>
                 </div>
               </div>

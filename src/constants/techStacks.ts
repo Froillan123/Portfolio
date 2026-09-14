@@ -11,10 +11,10 @@ export const techStacks = {
     "VPC Networking",
   ],
   security: [
-    "Zero-Trust Architecture",
+    "IAM Least Privilege & Service Scoping",
     "AES-256-GCM Envelope Encryption",
     "Google OIDC & RSA JWT Signing",
-    "SOC 2 Audit Logging",
+    "Structured Security Audit Logging",
     "Cloud Security Assessment",
     "RA 10173 DPA Compliance",
   ],

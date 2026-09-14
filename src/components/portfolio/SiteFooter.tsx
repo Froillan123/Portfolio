@@ -7,7 +7,7 @@ export function SiteFooter() {
     <footer className="border-t border-border py-8">
       <div className="container mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground sm:px-6">
         <p>
-          © {year} {profile.name}. Built with React, TypeScript, and shadcn/ui.
+          © {year} {profile.name}. All rights reserved.
         </p>
       </div>
     </footer>

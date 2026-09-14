@@ -3,33 +3,35 @@ export const chatbotResponses: { [key: string]: string } = {
   hello: "Hi there! What would you like to know about Froillan's cloud, platform, or security engineering work?",
   hey: "Hey! What can I help you with regarding cloud infrastructure, security assessments, or DevOps pipelines?",
   about:
-    "Froillan Kim B. Edem is a Cloud/Platform and Cloud Security Engineer (B.S. IT graduate from University of Cebu, 2026). He specializes in Google Cloud, GitOps dynamic matrix deployments, custom Go API gateways, zero-trust IAM, and KMS envelope-encryption secret vaults. He also conducts authorized cloud security assessments.",
+    "Froillan Kim B. Edem is a Cloud/Platform and Cloud Security Engineer (B.S. IT graduate from University of Cebu, 2026). He specializes in Google Cloud, GitOps dynamic matrix deployments, custom Go API gateways, IAM least privilege, and KMS envelope-encryption secret vaults. He also conducts authorized cloud security assessments.",
   skills:
-    "Core Technical Stack:\n• Cloud: Google Cloud Platform (Cloud Run, Cloud Build, KMS, IAM, VPC, Secret Manager)\n• DevOps: Docker, GitHub Actions, GitOps, CI/CD, dynamic matrix builds\n• Architecture: Microservices, API gateway design, reverse proxy, gRPC/HTTP2, WebSockets, SSE\n• Security: Zero-Trust IAM, OIDC token exchange, RSA/JWT, AES-256-GCM, KMS, SOC 2-aligned\n• Languages: Go (Golang), Python, C# (.NET Core), SQL, Dart, TypeScript\n• Databases: PostgreSQL, Redis, MongoDB, AWS S3",
+    "Core Technical Stack:\n• Cloud: Google Cloud Platform (Cloud Run, Cloud Build, KMS, IAM, VPC, Secret Manager, Cloud SQL)\n• DevOps: Docker, GitHub Actions, GitOps, CI/CD, dynamic matrix builds\n• Architecture: Microservices, API gateway design, reverse proxy, gRPC/HTTP2, WebSockets, SSE\n• Security: IAM least privilege, OIDC token exchange, RSA/JWT, AES-256-GCM, GCP KMS, structured audit logging\n• Languages: Go (Golang), Python, C# (.NET Core), SQL, Dart, TypeScript\n• Databases: PostgreSQL, Redis, MongoDB, AWS S3",
   security:
-    "Froillan was engaged by a Philippine real estate platform to perform an authorized cloud security assessment. He identified 15+ vulnerabilities across storage permissions, IAM policies, and network exposure, audited public cloud storage exposures, authored RA 10173 compliance remediation reports, and designed VPC private subnet & bastion host architectures (client name withheld per confidentiality agreement).",
+    "Froillan was engaged by a Philippine real estate platform to perform an authorized cloud security assessment. He identified 15+ vulnerabilities across cloud storage permissions, IAM policies, network exposure, and database configuration, audited public cloud storage exposures, authored RA 10173 compliance remediation reports, and designed VPC private subnet & bastion host architectures (client name withheld per confidentiality agreement).",
   experience:
-    "1. Authorized Cloud Security Assessment Contributor (Jan 2026 – Mar 2026): Engaged by a Philippine real estate platform to audit cloud infrastructure, identifying 15+ vulnerabilities and evaluating remediations against RA 10173.\n2. Platform & Cloud Security Engineer (Capstone Lead) at FaceOfMind Infrastructure (2025 – 2026): Architected GitOps CI/CD on GCP, custom Go API gateway, and KMS envelope encryption vault.",
+    "1. Cloud Security Intern – Authorized Cloud Security Assessment (Jan 2026 – Mar 2026): Engaged by a Philippine real estate platform to audit cloud infrastructure, identifying 15+ vulnerabilities and evaluating remediations against RA 10173.\n2. Platform & Cloud Security Engineer (Capstone Lead) at FaceOfMind Infrastructure (2025 – 2026): Architected GitOps CI/CD on GCP, custom Go API gateway, and KMS envelope encryption vault.",
   assessment:
     "Froillan was engaged by a Philippine real estate platform to perform an authorized security assessment of their cloud infrastructure. He identified 15+ vulnerabilities across storage permissions, IAM policies, network exposure, and database configuration, and authored remediation reports aligned with RA 10173 (client name withheld per confidentiality agreement).",
   projects:
-    "Featured Projects & Platforms:\n1. GitOps Internal Developer Platform on GCP (Dynamic Matrix Builds on GitHub Actions & Cloud Run)\n2. Custom Go API Gateway (Dynamic routing, OIDC token exchange, HTTP/2 & gRPC streaming)\n3. Zero-Trust KMS Secret Vault (PostgreSQL, AES-256-GCM, GCP KMS, Redis ~2ms cache)\n4. FaceOfMind Mental Wellness Platform (Flutter + React + FastAPI + .NET)\n5. Authorized Cloud Security Assessment (15+ findings)",
+    "FaceOfMind Cloud Infrastructure Ecosystem:\nRather than a simple app, FaceOfMind was engineered as a 4-tier cloud ecosystem on GCP:\n1. Ingress Tier: Custom Go API Gateway (dynamic routing & OIDC exchange)\n2. Security Tier: KMS-Backed Secret Vault (AES-256-GCM envelope encryption & ~2ms Redis cache)\n3. CI/CD Tier: GitOps Internal Developer Platform (dynamic matrix diff builds & Cloud Run)\n4. Workloads Tier: Multi-Service Core (FastAPI + .NET Core + Flutter/React)\n+ External Authorized Cloud Security Assessment (15+ findings)",
   gateway:
-    "The Go API Gateway is a custom reverse proxy serving as the single entry point for internal microservices. It features longest-prefix dynamic routing from PostgreSQL, automated Google OIDC token generation (RSA PKCS8 signing), HTTP/2 & gRPC trailer preservation, and observability latency headers.",
+    "The Go API Gateway is the Ingress Subsystem of the FaceOfMind ecosystem: a custom reverse proxy serving as the single secure entry point for all microservices. It features longest-prefix dynamic routing from PostgreSQL, hot reloads without gateway restarts, automated Google OIDC token exchange (RSA PKCS8 signing), HTTP/2 & gRPC streaming, and latency telemetry injection.",
   vault:
-    "The Zero-Trust Secret Vault is built on PostgreSQL with AES-256-GCM envelope encryption. Data Encryption Keys (DEKs) are wrapped by GCP KMS to ensure no plaintext keys exist at rest. It features ~2ms Redis caching, service-isolated secret scoping, and SOC 2-aligned audit trails.",
+    "The KMS-Backed Secret Vault is the Cryptographic Subsystem of FaceOfMind: built on PostgreSQL with AES-256-GCM envelope encryption. Data Encryption Keys (DEKs) are dynamically wrapped by GCP KMS to ensure no plaintext keys exist at rest. It features ~2ms Redis caching, service-isolated secret scoping, and structured audit trails.",
   gitops:
-    "The GitOps platform uses GitHub Actions to parse service.yaml manifests, calculate a dynamic deployment matrix, and trigger asynchronous Cloud Build jobs only for modified microservices—enforcing least-privilege IAM bindings automatically.",
+    "The GitOps IDP is the Deployment Subsystem of FaceOfMind: uses GitHub Actions to parse service manifests, calculate a dynamic matrix diff filter to build only modified microservices, and trigger asynchronous Cloud Build jobs—enforcing least-privilege IAM bindings (roles/run.invoker) automatically.",
   faceofmind:
-    "FaceOfMind was Froillan's Capstone project at the University of Cebu: an AI-powered emotional wellness ecosystem with a Flutter mobile app, React clinician portal, and Python FastAPI / .NET Core microservices hosted on GCP Cloud Run.",
+    "FaceOfMind was Froillan's flagship Capstone project at the University of Cebu: an enterprise-grade cloud ecosystem on Google Cloud Platform decomposed into specialized tiers: Go Ingress Gateway, KMS Secret Vault, GitOps CI/CD, and containerized FastAPI / .NET Core microservices on Cloud Run.",
+  philosophy:
+    "Engineering Focus:\n1. Automate repetitive infrastructure and deployment workflows.\n2. Prefer least-privilege IAM and service isolation.\n3. Design systems that scale without unnecessary operational complexity.\n4. Treat observability, security, and failure handling as part of the architecture.\n5. Prefer managed cloud infrastructure where it reduces operational overhead.",
   contact:
     "Email: froillan.edem@gmail.com · Phone: +63 9910522445 · LinkedIn: https://tinyurl.com/yc6hd2nx · GitHub: https://github.com/Froillan123",
   email: "froillan.edem@gmail.com — feel free to reach out directly!",
   github: "GitHub profile: https://github.com/Froillan123",
   resume: "You can view and download Froillan's resume via the Resume button in the navigation bar or hero section.",
-  help: "You can ask about: cloud skills, security assessment, Go API Gateway, KMS secret vault, GitOps pipelines, experience, or contact info.",
+  help: "You can ask about: cloud skills, security assessment, Go API Gateway, KMS secret vault, GitOps pipelines, engineering focus, experience, or contact info.",
   default:
-    "I can share details on Froillan's cloud platform projects, authorized security assessment, Go API gateway, skills, or contact info. What would you like to explore?",
+    "I can share details on Froillan's cloud platform projects, authorized security assessment, Go API gateway, engineering focus, skills, or contact info. What would you like to explore?",
 };
 
 export function getChatbotResponse(message: string): string {
@@ -56,6 +58,9 @@ export function getChatbotResponse(message: string): string {
   }
   if (lower.includes("faceofmind") || lower.includes("face of mind") || lower.includes("capstone")) {
     return chatbotResponses["faceofmind"];
+  }
+  if (lower.includes("philosophy") || lower.includes("focus") || lower.includes("principle")) {
+    return chatbotResponses["philosophy"];
   }
   if (lower.includes("skill") || lower.includes("tech") || lower.includes("stack") || lower.includes("language")) {
     return chatbotResponses["skills"];

@@ -2,6 +2,7 @@ import { SiteFooter } from "@/components/portfolio/SiteFooter";
 import { SiteHeader } from "@/components/portfolio/SiteHeader";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
+import { EngineeringFocusSection } from "@/components/portfolio/EngineeringFocusSection";
 import { ExperienceSection } from "@/components/portfolio/ExperienceSection";
 import { SkillsSection } from "@/components/portfolio/SkillsSection";
 import { ContactSection } from "@/components/portfolio/ContactSection";
@@ -18,6 +19,7 @@ export function Portfolio() {
       <main className="overflow-x-hidden">
         <HeroSection />
         <ProjectsSection />
+        <EngineeringFocusSection />
         <ExperienceSection />
         <SkillsSection />
         <ContactSection />

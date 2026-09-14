@@ -14,11 +14,8 @@ type SiteHeaderProps = {
   activeSection: string;
 };
 
-const initials = profile.name
-  .split(" ")
-  .map((part) => part[0])
-  .join("")
-  .slice(0, 2);
+const nameParts = profile.name.split(" ").filter(Boolean);
+const initials = `${nameParts[0]?.[0] || "F"}${nameParts[nameParts.length - 1]?.[0] || "E"}`;
 
 export function SiteHeader({ activeSection }: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
@@ -46,7 +43,7 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
         </button>
 
         <nav
-          className="hidden items-center gap-0.5 rounded-full border border-border/60 bg-muted/20 p-0.5 xl:flex"
+          className="hidden items-center gap-0.5 rounded-full border border-border/60 bg-muted/20 p-0.5 lg:flex"
           aria-label="Primary"
         >
           {navigationItems.map((item) => {
@@ -57,7 +54,7 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
                 type="button"
                 onClick={() => navigate(item.id)}
                 className={cn(
-                  "rounded-full px-3 py-1 text-xs font-semibold tracking-wide transition-all duration-200 lg:px-4 lg:text-[13px] font-display",
+                  "rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide transition-all duration-200 xl:px-3.5 xl:text-[13px] font-display",
                   isActive
                     ? "bg-background text-foreground shadow-sm border border-border/40"
                     : "text-muted-foreground hover:text-foreground"
@@ -79,7 +76,7 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
             Resume
           </Button>
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild className="xl:hidden">
+            <SheetTrigger asChild className="lg:hidden">
               <Button
                 variant="outline"
                 size="icon"

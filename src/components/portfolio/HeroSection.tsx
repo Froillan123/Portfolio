@@ -9,7 +9,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative flex min-h-[90svh] scroll-mt-20 flex-col justify-center overflow-hidden border-b border-border/60 sm:scroll-mt-28 bg-background"
+      className="relative flex min-h-screen min-h-[100svh] min-h-[100dvh] scroll-mt-20 flex-col justify-center overflow-hidden border-b border-border/60 sm:scroll-mt-28 bg-background pt-14 sm:pt-16 lg:pt-0"
     >
       {/* Background gradients */}
       <div
@@ -26,7 +26,7 @@ export function HeroSection() {
       <div className="container relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 lg:items-center lg:gap-12 xl:gap-16">
           
-          {/* Left Column: Text, Action Buttons & Stats */}
+          {/* Left Column: Text, Core Stack Bar, Action Buttons & Stats */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left mt-10 lg:mt-0 lg:col-span-7">
             {/* Availability Badge */}
             <Badge
@@ -48,10 +48,26 @@ export function HeroSection() {
               {profile.title}
             </p>
 
-            {/* One-Line Punchline */}
+            {/* Punchline */}
             <p className="mt-4 max-w-lg text-base sm:text-lg text-muted-foreground leading-relaxed">
               {profile.tagline}
             </p>
+
+            {/* Core Tech Stack Gravity Bar */}
+            <div className="mt-4 flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground/70 font-semibold mr-1">
+                Core Stack:
+              </span>
+              {profile.coreTech.map((tech, index) => (
+                <span
+                  key={tech}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-muted/30 px-2.5 py-1 text-xs font-mono font-medium text-foreground/90 shadow-sm backdrop-blur-sm"
+                >
+                  <span className="size-1 rounded-full bg-primary" />
+                  {tech}
+                </span>
+              ))}
+            </div>
 
             {/* 3 Main Action Buttons */}
             <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3">

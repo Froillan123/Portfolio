@@ -16,11 +16,8 @@ import { Separator } from "@/components/ui/separator";
 import { aboutJourney, profile, workExperiences } from "@/constants/profile";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 
-const initials = profile.name
-  .split(" ")
-  .map((part) => part[0])
-  .join("")
-  .slice(0, 2);
+const nameParts = profile.name.split(" ").filter(Boolean);
+const initials = `${nameParts[0]?.[0] || "F"}${nameParts[nameParts.length - 1]?.[0] || "E"}`;
 
 const platformMetrics = [
   { value: 15, label: "Vulnerabilities Audited", suffix: "+" },
