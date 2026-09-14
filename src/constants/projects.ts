@@ -63,7 +63,7 @@ export const projects: Project[] = [
       "Microservice APIs in Python (FastAPI) and .NET Core deployed on Google Cloud",
     ],
     technologies: ["Flutter", "React", "Python (FastAPI)", ".NET Core", "GCP", "PostgreSQL"],
-    link: "https://www.faceofmind.it.com/",
+    link: "https://www.faceofmind.com/",
     linkLabel: "Live Site",
   },
 ];
