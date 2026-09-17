@@ -2,9 +2,8 @@ import { SiteFooter } from "@/components/portfolio/SiteFooter";
 import { SiteHeader } from "@/components/portfolio/SiteHeader";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
-import { EngineeringFocusSection } from "@/components/portfolio/EngineeringFocusSection";
 import { ExperienceSection } from "@/components/portfolio/ExperienceSection";
-import { SkillsSection } from "@/components/portfolio/SkillsSection";
+import { AboutSection } from "@/components/portfolio/AboutSection";
 import { ContactSection } from "@/components/portfolio/ContactSection";
 import { Chatbot } from "@/components/Chatbot";
 import { sectionIds } from "@/constants/navigationItems";
@@ -18,10 +17,9 @@ export function Portfolio() {
       <SiteHeader activeSection={activeSection} />
       <main className="overflow-x-hidden">
         <HeroSection />
+        <AboutSection />
         <ProjectsSection />
-        <EngineeringFocusSection />
         <ExperienceSection />
-        <SkillsSection />
         <ContactSection />
       </main>
       <SiteFooter />

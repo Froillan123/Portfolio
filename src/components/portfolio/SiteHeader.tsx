@@ -54,7 +54,7 @@ export function SiteHeader({ activeSection }: SiteHeaderProps) {
                 type="button"
                 onClick={() => navigate(item.id)}
                 className={cn(
-                  "rounded-full px-2.5 py-1 text-xs font-semibold tracking-wide transition-all duration-200 xl:px-3.5 xl:text-[13px] font-display",
+                  "rounded-full px-3 py-1 text-xs font-semibold tracking-wide transition-all duration-200 xl:px-4 xl:text-sm font-display",
                   isActive
                     ? "bg-background text-foreground shadow-sm border border-border/40"
                     : "text-muted-foreground hover:text-foreground"

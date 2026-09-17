@@ -9,7 +9,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen min-h-[100svh] min-h-[100dvh] scroll-mt-20 flex-col justify-center overflow-hidden border-b border-border/60 sm:scroll-mt-28 bg-background pt-14 sm:pt-16 lg:pt-0"
+      className="relative flex min-h-screen min-h-[100svh] min-h-[100dvh] scroll-mt-16 flex-col justify-center overflow-hidden border-b border-border/60 sm:scroll-mt-20 bg-background pt-12 sm:pt-16 lg:pt-0"
     >
       {/* Background gradients */}
       <div
@@ -23,95 +23,104 @@ export function HeroSection() {
 
       <FloatingParticles />
 
-      <div className="container relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 lg:items-center lg:gap-12 xl:gap-16">
+      <div className="container relative mx-auto w-full max-w-6xl px-3.5 sm:px-6 py-12 sm:py-16 lg:py-20">
+        <div className="flex flex-col-reverse lg:grid lg:grid-cols-12 lg:items-center lg:gap-10 xl:gap-14">
           
           {/* Left Column: Text, Core Stack Bar, Action Buttons & Stats */}
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left mt-10 lg:mt-0 lg:col-span-7">
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left mt-8 lg:mt-0 lg:col-span-7">
             {/* Availability Badge */}
-            <Badge
-              variant="secondary"
-              className="mb-5 gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary shadow-sm"
-            >
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400/30 opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
-              </span>
-              <span>Open to Cloud, Platform & DevOps Roles</span>
-            </Badge>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-4">
+              <Badge
+                variant="secondary"
+                className="gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1 text-xs sm:text-sm font-semibold text-primary shadow-xs"
+              >
+                <span className="relative flex size-2.5">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400/30 opacity-75" />
+                  <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
+                </span>
+                <span>Open to Platform & Cloud Systems Roles</span>
+              </Badge>
+
+              <Badge
+                variant="outline"
+                className="rounded-full border-border/70 text-xs font-mono text-muted-foreground px-3 py-1"
+              >
+                {profile.badgeSubtitle}
+              </Badge>
+            </div>
 
             {/* Name & Title */}
-            <h1 className="text-balance text-4xl font-extrabold font-display leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.25rem] text-foreground">
+            <h1 className="text-balance text-3xl font-extrabold font-display leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl text-foreground">
               {profile.name}
             </h1>
-            <p className="mt-2 text-lg sm:text-xl font-semibold text-primary">
+            <p className="mt-2 text-base sm:text-xl font-bold text-primary">
               {profile.title}
             </p>
 
             {/* Punchline */}
-            <p className="mt-4 max-w-lg text-base sm:text-lg text-muted-foreground leading-relaxed">
+            <p className="mt-3.5 max-w-xl text-sm sm:text-base text-muted-foreground leading-relaxed font-normal">
               {profile.tagline}
             </p>
 
             {/* Core Tech Stack Gravity Bar */}
-            <div className="mt-4 flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground/70 font-semibold mr-1">
+            <div className="mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-semibold mr-1">
                 Core Stack:
               </span>
-              {profile.coreTech.map((tech, index) => (
+              {profile.coreTech.map((tech) => (
                 <span
                   key={tech}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-muted/30 px-2.5 py-1 text-xs font-mono font-medium text-foreground/90 shadow-sm backdrop-blur-sm"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-border/80 bg-muted/30 px-2.5 py-1 text-xs sm:text-sm font-mono font-medium text-foreground/90 shadow-xs backdrop-blur-sm"
                 >
-                  <span className="size-1 rounded-full bg-primary" />
+                  <span className="size-1.5 rounded-full bg-primary" />
                   {tech}
                 </span>
               ))}
             </div>
 
             {/* 3 Main Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+            <div className="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 w-full sm:w-auto">
               <Button
-                size="lg"
-                className="h-11 rounded-full px-6 font-semibold shadow-md hover:shadow-lg transition-all"
-                onClick={() => scrollToSection("projects")}
+                size="sm"
+                className="h-10 rounded-full px-5 font-semibold shadow-sm hover:shadow-md transition-all text-xs sm:text-sm"
+                onClick={() => scrollToSection("platform")}
               >
-                View Projects
-                <ArrowRight className="size-4 ml-1.5" />
+                View Platform Architecture
+                <ArrowRight className="size-3.5 ml-1.5" />
               </Button>
 
               <Button
-                size="lg"
+                size="sm"
                 variant="outline"
-                className="h-11 rounded-full px-6 font-semibold hover:bg-muted/50 transition-all"
+                className="h-10 rounded-full px-5 font-semibold hover:bg-muted/50 transition-all text-xs sm:text-sm"
                 onClick={() => window.open(encodeURI(profile.resumePath), "_blank")}
               >
-                <Download className="size-4 mr-1.5" />
+                <Download className="size-3.5 mr-1.5" />
                 Resume
               </Button>
 
               <Button
-                size="lg"
+                size="sm"
                 variant="ghost"
-                className="h-11 rounded-full px-6 font-semibold hover:bg-muted/50 transition-all"
+                className="h-10 rounded-full px-5 font-semibold hover:bg-muted/50 transition-all text-xs sm:text-sm"
                 onClick={() => scrollToSection("contact")}
               >
-                <Mail className="size-4 mr-1.5" />
+                <Mail className="size-3.5 mr-1.5" />
                 Contact
               </Button>
             </div>
 
-            {/* 3 Real Concrete Stats */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+            {/* 4 Real Concrete Metrics with Clear Human Context */}
+            <div className="mt-9 sm:mt-11 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 w-full">
               {profile.stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-2xl border border-border/70 bg-card/40 p-4 backdrop-blur-sm shadow-sm text-center lg:text-left"
+                  className="rounded-xl border border-border/70 bg-card/50 p-3.5 sm:p-4 backdrop-blur-sm shadow-xs text-left"
                 >
-                  <p className="text-2xl sm:text-3xl font-extrabold font-display text-primary">
+                  <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-display text-primary tracking-tight">
                     {stat.value}
                   </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
+                  <p className="mt-1 text-xs sm:text-sm font-medium text-muted-foreground leading-snug">
                     {stat.label}
                   </p>
                 </div>
@@ -120,13 +129,13 @@ export function HeroSection() {
           </div>
 
           {/* Right Column: Sleek Framed Profile Image */}
-          <div className="relative w-full max-w-[min(100%,18rem)] sm:max-w-xs lg:max-w-sm lg:col-span-5 mx-auto group">
+          <div className="relative w-full max-w-[min(100%,15rem)] sm:max-w-xs lg:max-w-sm lg:col-span-5 mx-auto group">
             {/* Ambient background glow */}
-            <div className="absolute -inset-2 rounded-[2.25rem] bg-gradient-to-r from-primary/20 via-primary/10 to-transparent opacity-75 blur-xl transition duration-1000 group-hover:opacity-100 group-hover:duration-200" />
+            <div className="absolute -inset-2 rounded-[2rem] bg-gradient-to-r from-primary/20 via-primary/10 to-transparent opacity-75 blur-xl transition duration-1000 group-hover:opacity-100 group-hover:duration-200" />
             
             {/* Geometric frame */}
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-border bg-background shadow-2xl transition-all duration-500 group-hover:scale-[1.01] group-hover:border-primary/20 p-2">
-              <div className="size-full overflow-hidden rounded-[1.75rem]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-border bg-background shadow-xl transition-all duration-500 group-hover:scale-[1.01] group-hover:border-primary/20 p-1.5">
+              <div className="size-full overflow-hidden rounded-[1.5rem]">
                 <img
                   src={profile.imageUrl}
                   alt={profile.name}

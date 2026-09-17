@@ -5,106 +5,81 @@ import {
   Gauge,
   GitMerge,
   ShieldAlert,
+  Code,
 } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { SectionHeading } from "@/components/portfolio/SectionHeading";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { engineeringPrinciples } from "@/constants/profile";
 
-const principles = [
-  {
-    icon: GitMerge,
-    title: "Automate Repetitive Infrastructure & Workflows",
-    badge: "Automation & GitOps",
-    description:
-      "Eliminate manual operational toil through declarative GitOps pipelines, matrix build filters that only compile modified services, and automated IAM bindings on container deployment.",
-    quote: "If a deployment or configuration task is done twice, it should be codified and automated.",
-  },
-  {
-    icon: Fingerprint,
-    title: "Prefer Least-Privilege IAM & Service Isolation",
-    badge: "Zero-Toil Security",
-    description:
-      "Enforce granular service account permissions (e.g. roles/run.invoker per service), AES-256-GCM envelope encryption with GCP KMS, and isolated secret scoping at runtime.",
-    quote: "Security boundaries should be structural and programmatic, not assumed.",
-  },
-  {
-    icon: Cpu,
-    title: "Scale Without Unnecessary Operational Complexity",
-    description:
-      "Architect distributed systems that handle high throughput and dynamic routing without introducing fragile orchestration overhead or unnecessary middleware dependencies.",
-    badge: "System Simplicity",
-    quote: "Simplicity in architecture is the highest form of reliability.",
-  },
-  {
-    icon: Gauge,
-    title: "Observability, Telemetry & Failure as First-Class Design",
-    badge: "Resiliency & Telemetry",
-    description:
-      "Embed end-to-end latency propagation headers (X-Gateway, X-Upstream, X-Total), structured security audit trails, and graceful route fallbacks directly into proxy and service layers.",
-    quote: "You cannot debug, secure, or optimize what you do not measure.",
-  },
-  {
-    icon: ShieldAlert,
-    title: "Prefer Managed Cloud Infrastructure for Operational Leverage",
-    badge: "Cloud Efficiency",
-    description:
-      "Leverage serverless container platforms (Cloud Run), managed KMS, and managed relational databases (Cloud SQL) to eliminate patching toil while maintaining full control of application boundaries.",
-    quote: "Spend engineering cycles on platform reliability and developer velocity, not server maintenance.",
-  },
-];
+const principleIcons = [GitMerge, Fingerprint, Cpu, Gauge, ShieldAlert];
 
 export function EngineeringFocusSection() {
   return (
     <Section id="philosophy">
       <SectionHeading
-        title="Engineering Focus"
-        description="Core architectural principles guiding my approach to cloud platforms, security, and developer infrastructure."
+        title="Engineering Focus & Architecture Patterns"
+        description="Core principles guiding platform reliability, zero-toil security, and developer velocity."
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {principles.map((item, idx) => {
-          const Icon = item.icon;
-          const isWide = idx === 0;
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 max-w-6xl mx-auto w-full">
+        {engineeringPrinciples.map((item, idx) => {
+          const Icon = principleIcons[idx] || Cpu;
 
           return (
             <Card
               key={item.title}
-              className={`border-border/80 bg-card/60 backdrop-blur-md shadow-md transition-all duration-300 hover:shadow-xl hover:border-primary/25 relative overflow-hidden flex flex-col justify-between ${
-                isWide ? "md:col-span-2 lg:col-span-2" : ""
-              }`}
+              className="flex flex-col justify-between border-border/70 bg-card/60 backdrop-blur-md shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-200 rounded-xl sm:rounded-2xl overflow-hidden p-3.5 sm:p-4.5"
             >
-              <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-br from-primary/5 to-transparent rounded-full -mr-10 -mt-10 pointer-events-none" />
-
-              <CardContent className="p-5 sm:p-6 flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
+                {/* Header: Icon, Number & Badge */}
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 border border-primary/20 text-primary">
-                    <Icon className="size-5" />
+                  <div className="flex items-center gap-2">
+                    <div className="flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary">
+                      <Icon className="size-3.5 sm:size-4" />
+                    </div>
+                    <span className="text-[10px] font-mono text-muted-foreground font-bold">
+                      0{idx + 1}.
+                    </span>
                   </div>
                   <Badge
                     variant="outline"
-                    className="rounded-full bg-primary/5 text-primary border-primary/15 text-[10px] font-semibold tracking-wider font-mono uppercase px-2.5 py-0.5"
+                    className="rounded-full bg-primary/5 text-primary border-primary/20 text-[9px] sm:text-[10px] font-mono uppercase px-2 py-0"
                   >
                     {item.badge}
                   </Badge>
                 </div>
 
-                <div className="mt-1">
-                  <h3 className="text-base sm:text-lg font-bold font-display text-foreground leading-snug">
+                {/* Title & Description */}
+                <div>
+                  <h3 className="text-xs sm:text-sm font-bold font-display text-foreground leading-snug">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="mt-auto pt-3 border-t border-border/40 flex items-start gap-2">
-                  <CheckCircle2 className="size-3.5 text-primary shrink-0 mt-0.5" />
-                  <p className="text-[11px] font-mono text-muted-foreground italic">
-                    "{item.quote}"
-                  </p>
+                {/* Applied In: Code Pattern Callout */}
+                <div className="mt-1 rounded-lg bg-muted/40 border border-border/60 p-2 sm:p-2.5 text-[10px] sm:text-[11px] text-foreground font-medium leading-relaxed">
+                  <span className="font-semibold text-primary font-mono text-[9px] sm:text-[10px] uppercase tracking-wider block mb-0.5 flex items-center gap-1">
+                    <Code className="size-2.5" />
+                    Applied Pattern:
+                  </span>
+                  <span className="text-muted-foreground text-[10px] sm:text-[11px]">
+                    {item.appliedIn}
+                  </span>
                 </div>
-              </CardContent>
+              </div>
+
+              {/* Quote footer */}
+              <div className="mt-2.5 pt-2 border-t border-border/40 flex items-start gap-1.5">
+                <CheckCircle2 className="size-3 text-primary shrink-0 mt-0.5" />
+                <p className="text-[10px] sm:text-[11px] font-mono text-muted-foreground italic leading-tight">
+                  "{item.quote}"
+                </p>
+              </div>
             </Card>
           );
         })}

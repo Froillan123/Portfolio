@@ -8,13 +8,15 @@ type SectionHeadingProps = {
 
 export function SectionHeading({ title, description, className }: SectionHeadingProps) {
   return (
-    <div className={cn("mb-8 flex flex-col gap-2 sm:mb-10 sm:gap-3", className)}>
-      <div className="flex items-start gap-2 sm:items-center sm:gap-3">
-        <span className="mt-1 h-6 w-1 shrink-0 rounded-full bg-foreground sm:mt-0 sm:h-8" aria-hidden />
-        <h2 className="text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl">{title}</h2>
+    <div className={cn("mb-5 sm:mb-7 flex flex-col gap-1.5 sm:gap-2", className)}>
+      <div className="flex items-center gap-2 sm:gap-2.5">
+        <span className="h-5 w-1 shrink-0 rounded-full bg-primary sm:h-6" aria-hidden />
+        <h2 className="text-lg font-bold font-display tracking-tight sm:text-2xl md:text-3xl text-foreground">
+          {title}
+        </h2>
       </div>
       {description ? (
-        <p className="max-w-2xl pl-3 text-sm text-muted-foreground sm:pl-7 sm:text-base">
+        <p className="max-w-3xl pl-3 text-sm sm:text-base text-muted-foreground sm:pl-3.5 leading-relaxed font-normal">
           {description}
         </p>
       ) : null}
