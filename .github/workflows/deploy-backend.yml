@@ -118,7 +118,7 @@ jobs:
       - name: Notify Discord
         if: always()
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_DEPLOY_WEBHOOK_URL: ${{ secrets.DISCORD_DEPLOY_WEBHOOK_URL }}
           DEPLOY_STATUS: ${{ job.status }}
           DEPLOY_TARGET: "Backend (GCP Cloud Run)"
           DEPLOY_ENV: ${{ steps.resolve.outputs.env }}

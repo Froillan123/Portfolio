@@ -30,6 +30,19 @@ app = FastAPI(
     openapi_url=None
 )
 
+# HEAD Method Compatibility Middleware (Allows Uptime Robot, Health Probes & CDNs to HEAD any GET route)
+@app.middleware("http")
+async def handle_head_requests(request: Request, call_next):
+    if request.method == "HEAD":
+        request.scope["method"] = "GET"
+        response = await call_next(request)
+        return Response(
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            media_type=response.media_type
+        )
+    return await call_next(request)
+
 # Security Headers Middleware
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
@@ -128,10 +141,10 @@ async def custom_http_exception_handler(request: Request, exc: StarletteHTTPExce
         return HTMLResponse(content=GOOGLE_404_HTML, status_code=404)
     return Response(content=str(exc.detail), status_code=exc.status_code)
 
-@app.get("/", response_class=HTMLResponse, status_code=404)
-@app.get("/docs", response_class=HTMLResponse, status_code=404)
-@app.get("/redoc", response_class=HTMLResponse, status_code=404)
-@app.get("/openapi.json", response_class=HTMLResponse, status_code=404)
+@app.api_route("/", methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], response_class=HTMLResponse, status_code=404)
+@app.api_route("/docs", methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], response_class=HTMLResponse, status_code=404)
+@app.api_route("/redoc", methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], response_class=HTMLResponse, status_code=404)
+@app.api_route("/openapi.json", methods=["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], response_class=HTMLResponse, status_code=404)
 def stealth_not_found():
     return HTMLResponse(content=GOOGLE_404_HTML, status_code=404)
 
