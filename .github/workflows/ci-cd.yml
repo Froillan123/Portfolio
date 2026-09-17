@@ -1,0 +1,201 @@
+name: GitOps CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - staging
+      - development
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: gitops-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  # ========================================================
+  # 1. CHANGE DETECTION
+  # ========================================================
+  detect-changes:
+    name: Detect Changed Components
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+      env: ${{ steps.resolve.outputs.env }}
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Resolve Environment
+        id: resolve
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" || "${GITHUB_REF}" == "refs/heads/master" ]]; then
+            echo "env=production" >> "$GITHUB_OUTPUT"
+          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+            echo "env=staging" >> "$GITHUB_OUTPUT"
+          else
+            echo "env=development" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check Component Diffs
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+              - '.github/scripts_actions/verify_vercel_deployment.py'
+              - '.github/workflows/deploy-frontend.yml'
+            backend:
+              - 'backend/**'
+              - '.github/workflows/deploy-backend.yml'
+
+  # ========================================================
+  # 2. FRONTEND DEPLOYMENT (Vercel Hook + Status Verification)
+  # ========================================================
+  deploy-frontend:
+    name: Frontend (Vercel)
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Deploy to Vercel & Poll Status
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        run: |
+          python .github/scripts_actions/verify_vercel_deployment.py
+
+      - name: Notify Discord Frontend Result
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DEPLOY_STATUS: ${{ job.status }}
+          DEPLOY_TARGET: "Frontend (Vercel)"
+          DEPLOY_ENV: ${{ needs.detect-changes.outputs.env }}
+          DEPLOY_URL: "https://froillan-edem.vercel.app"
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          python .github/scripts_actions/notify_discord.py
+
+  # ========================================================
+  # 3. BACKEND DEPLOYMENT (GCP Cloud Run via WIF)
+  # ========================================================
+  deploy-backend:
+    name: Backend (GCP Cloud Run)
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      GCP_REGION: asia-southeast1
+      SERVICE_NAME: portfolio-backend
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Authenticate to Google Cloud via WIF
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_WIF_SA_EMAIL }}
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build with Cloud Build
+        run: |
+          IMAGE_URI="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/portfolio/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
+          
+          gcloud builds submit backend \
+            --tag "${IMAGE_URI}" \
+            --project "${{ env.GCP_PROJECT_ID }}"
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        run: |
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
+            --image "${{ env.IMAGE_URI }}" \
+            --region "${{ env.GCP_REGION }}" \
+            --project "${{ env.GCP_PROJECT_ID }}" \
+            --platform managed \
+            --cpu 1 \
+            --memory 512Mi \
+            --min-instances 0 \
+            --max-instances 5 \
+            --concurrency 80 \
+            --timeout 60s \
+            --allow-unauthenticated \
+            --set-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }},DISCORD_WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }},ADMIN_API_KEY=${{ secrets.ADMIN_API_KEY }},ALLOWED_ORIGINS=https://froillan-edem.vercel.app"
+
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
+            --platform managed \
+            --region "${{ env.GCP_REGION }}" \
+            --project "${{ env.GCP_PROJECT_ID }}" \
+            --format 'value(status.url)')
+          
+          echo "SERVICE_URL=${SERVICE_URL}" >> $GITHUB_ENV
+
+      - name: Health Check
+        run: |
+          curl --fail --silent --show-error "${{ env.SERVICE_URL }}/api/health"
+          echo ""
+          echo "✅ Backend Cloud Run healthy!"
+
+      - name: Notify Discord Backend Result
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DEPLOY_STATUS: ${{ job.status }}
+          DEPLOY_TARGET: "Backend (GCP Cloud Run)"
+          DEPLOY_ENV: ${{ needs.detect-changes.outputs.env }}
+          DEPLOY_URL: ${{ env.SERVICE_URL }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          python .github/scripts_actions/notify_discord.py
+
+  # ========================================================
+  # 4. GITOPS SUMMARY
+  # ========================================================
+  gitops-summary:
+    name: GitOps Deployment Summary
+    needs: [detect-changes, deploy-frontend, deploy-backend]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Render Job Summary
+        run: |
+          echo "## 🚀 GitOps Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status | Target Provider |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|-----------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Frontend** | ${{ needs.deploy-frontend.result }} | Vercel (Hook + Poller) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Backend** | ${{ needs.deploy-backend.result }} | Google Cloud Run |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Commit: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY

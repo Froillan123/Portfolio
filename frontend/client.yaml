@@ -1,0 +1,28 @@
+# ========================================================
+# FaceOfMind Portfolio - Frontend Declarative Manifest
+# ========================================================
+name: portfolio-frontend
+display_name: Froillan Edem Portfolio Web Client
+type: frontend
+framework: vite
+enabled: true
+
+vercel:
+  org_id: "${VERCEL_ORG_ID}"
+  project_id: "${VERCEL_PROJECT_ID}"
+  build_command: "npm run build"
+  output_directory: "dist"
+
+deployment:
+  provider: vercel
+  mode: deploy-hook
+  poll_interval_seconds: 5
+  max_poll_timeout_seconds: 300
+  domains:
+    production:
+      - "froillan-edem.vercel.app"
+  environment_variables:
+    production:
+      VITE_API_BASE_URL: "https://api.froillan-edem-services.online"
+    development:
+      VITE_API_BASE_URL: "http://127.0.0.1:8000"

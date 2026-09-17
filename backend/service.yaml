@@ -1,0 +1,39 @@
+# ========================================================
+# FaceOfMind Portfolio - Backend Declarative Manifest
+# ========================================================
+name: portfolio-backend
+display_name: FaceOfMind Portfolio Backend & Discord Ingress Gateway
+type: service
+runtime: python310
+enabled: true
+
+compute:
+  provider: gcp
+  service: cloud-run
+  region: asia-southeast1
+  cpu: 1
+  memory: 512Mi
+  min_instances: 0
+  max_instances: 5
+  concurrency: 80
+  timeout: 60s
+  ingress: all
+  allow_unauthenticated: true
+
+container:
+  dockerfile: backend/Dockerfile
+  context: .
+  port: 8000
+
+env_secrets:
+  DATABASE_URL: "DATABASE_URL"
+  DISCORD_WEBHOOK_URL: "DISCORD_WEBHOOK_URL"
+  ADMIN_API_KEY: "ADMIN_API_KEY"
+
+env_vars:
+  ALLOWED_ORIGINS: "https://froillan-edem.vercel.app,http://localhost:8080,http://127.0.0.1:8080"
+  PORT: "8000"
+
+health_check:
+  path: /api/health
+  expected_status: 200
