@@ -40,14 +40,21 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           set -euo pipefail
+          CLEAN_TOKEN=$(echo -n "${{ secrets.VERCEL_TOKEN }}" | tr -d '\r\n' | xargs)
+          CLEAN_ORG_ID=$(echo -n "${{ secrets.VERCEL_ORG_ID }}" | tr -d '\r\n' | xargs)
+          CLEAN_PROJECT_ID=$(echo -n "${{ secrets.VERCEL_PROJECT_ID }}" | tr -d '\r\n' | xargs)
+
+          export VERCEL_ORG_ID="${CLEAN_ORG_ID}"
+          export VERCEL_PROJECT_ID="${CLEAN_PROJECT_ID}"
+
           echo "⬇️ Pulling Vercel project settings..."
-          npx vercel pull --yes --environment=production --token="${VERCEL_TOKEN}"
+          npx vercel pull --yes --environment=production --token="${CLEAN_TOKEN}"
           
           echo "🏗️ Building production artifacts with Vite..."
-          npx vercel build --prod --token="${VERCEL_TOKEN}"
+          npx vercel build --prod --token="${CLEAN_TOKEN}"
           
           echo "🚀 Deploying prebuilt bundle to Vercel..."
-          LIVE_URL=$(npx vercel deploy --prebuilt --prod --token="${VERCEL_TOKEN}")
+          LIVE_URL=$(npx vercel deploy --prebuilt --prod --token="${CLEAN_TOKEN}")
           
           echo "LIVE_URL=${LIVE_URL}" >> "$GITHUB_ENV"
           echo "🎉 Deployment successful: ${LIVE_URL}"

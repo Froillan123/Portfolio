@@ -22,9 +22,12 @@ from backend.security import (
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="FaceOfMind Portfolio & Contact Gateway API",
+    title="Froillan Edem Portfolio Ingress Gateway API",
     description="FastAPI + PostgreSQL CRUD & Discord Ingress Gateway with Server-Side WAF and Rate Limiting",
-    version="2.5.0"
+    version="2.5.1",
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None
 )
 
 # Security Headers Middleware
@@ -79,11 +82,10 @@ class InquiryResponse(BaseModel):
 @app.get("/")
 def root():
     return {
-        "service": "FaceOfMind Gateway API",
+        "service": "Froillan Edem Portfolio Ingress Gateway API",
         "status": "online",
-        "database": "PostgreSQL / SQLite",
         "waf": "Active (Token Bucket + Honeypot + XSS Filter)",
-        "docs": "/docs"
+        "region": "asia-southeast1"
     }
 
 @app.get("/api/health")

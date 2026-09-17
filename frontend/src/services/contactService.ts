@@ -30,10 +30,7 @@ export interface SubmissionResult {
   useFallback?: boolean;
 }
 
-/**
- * Pure client API service that dispatches contact inquiries directly to the FastAPI + PostgreSQL backend.
- * All rate-limiting, WAF rules, Discord webhook forwarding, and database persistence occur on the server.
- */
+
 export async function sendContactInquiry(
   params: ContactSubmissionParams
 ): Promise<SubmissionResult> {
