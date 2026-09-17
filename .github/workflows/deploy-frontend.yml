@@ -1,16 +1,6 @@
-name: Deploy Frontend (Vercel)
+name: Deploy Frontend (Vercel) - Manual
 
 on:
-  push:
-    branches:
-      - main
-      - master
-      - staging
-      - development
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/deploy-frontend.yml'
-      - '.github/scripts_actions/**'
   workflow_dispatch:
 
 concurrency:
@@ -19,47 +9,48 @@ concurrency:
 
 jobs:
   deploy-vercel:
-    name: Deploy to Vercel & Verify Status
+    name: Deploy to Vercel via CLI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Resolve Environment
-        id: resolve
-        shell: bash
-        run: |
-          if [[ "${GITHUB_REF}" == "refs/heads/main" || "${GITHUB_REF}" == "refs/heads/master" ]]; then
-            echo "env=production" >> "$GITHUB_OUTPUT"
-          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
-            echo "env=staging" >> "$GITHUB_OUTPUT"
-          else
-            echo "env=development" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm ci
 
-      - name: Trigger & Verify Vercel Deployment
+      - name: Build & Deploy to Vercel
+        id: vercel-deploy
+        working-directory: frontend
         env:
-          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          python .github/scripts_actions/verify_vercel_deployment.py
-
-      - name: Deployment Summary
-        if: always()
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🚀 Froillan Edem Portfolio - Frontend Deployment"
-          echo "Environment: ${{ steps.resolve.outputs.env }}"
-          echo "Commit: ${{ github.sha }}"
-          echo "Provider: Vercel (Declarative Hook + Status Poller)"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          set -euo pipefail
+          echo "⬇️ Pulling Vercel project settings..."
+          npx vercel pull --yes --environment=production --token="${VERCEL_TOKEN}"
+          
+          echo "🏗️ Building production artifacts with Vite..."
+          npx vercel build --prod --token="${VERCEL_TOKEN}"
+          
+          echo "🚀 Deploying prebuilt bundle to Vercel..."
+          LIVE_URL=$(npx vercel deploy --prebuilt --prod --token="${VERCEL_TOKEN}")
+          
+          echo "LIVE_URL=${LIVE_URL}" >> "$GITHUB_ENV"
+          echo "🎉 Deployment successful: ${LIVE_URL}"
 
       - name: Notify Discord
         if: always()
@@ -67,8 +58,8 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DEPLOY_STATUS: ${{ job.status }}
           DEPLOY_TARGET: "Frontend (Vercel)"
-          DEPLOY_ENV: ${{ steps.resolve.outputs.env }}
-          DEPLOY_URL: "https://froillan-edem.vercel.app"
+          DEPLOY_ENV: "production"
+          DEPLOY_URL: ${{ env.LIVE_URL || 'https://froillan-edem.vercel.app' }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           python .github/scripts_actions/notify_discord.py

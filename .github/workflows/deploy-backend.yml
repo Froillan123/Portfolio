@@ -1,16 +1,6 @@
-name: Deploy Backend (GCP Cloud Run)
+name: Deploy Backend (GCP Cloud Run) - Manual
 
 on:
-  push:
-    branches:
-      - main
-      - master
-      - staging
-      - development
-    paths:
-      - 'backend/**'
-      - '.github/workflows/deploy-backend.yml'
-      - '.github/scripts_actions/**'
   workflow_dispatch:
 
 concurrency:
@@ -38,7 +28,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Resolve Environment & Sanitize Project ID
+      - name: Resolve Environment & Project ID
         id: resolve
         shell: bash
         run: |
@@ -50,10 +40,11 @@ jobs:
             echo "env=development" >> "$GITHUB_OUTPUT"
           fi
 
-          # Sanitize GCP_PROJECT_ID by stripping accidental whitespace/newlines
           CLEAN_PROJECT_ID=$(echo -n "${{ secrets.GCP_PROJECT_ID }}" | tr -d '\r\n' | xargs)
+          if [ -z "$CLEAN_PROJECT_ID" ]; then
+            CLEAN_PROJECT_ID="burnished-ray-485509-g5"
+          fi
           echo "PROJECT_ID=${CLEAN_PROJECT_ID}" >> "$GITHUB_ENV"
-          echo "project_id=${CLEAN_PROJECT_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Authenticate to Google Cloud via Workload Identity Federation (WIF)
         id: auth
