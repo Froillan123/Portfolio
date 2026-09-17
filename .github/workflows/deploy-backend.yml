@@ -22,7 +22,6 @@ permissions:
   id-token: write
 
 env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GCP_REGION: asia-southeast1
   SERVICE_NAME: portfolio-backend
 
@@ -39,7 +38,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Resolve Environment
+      - name: Resolve Environment & Sanitize Project ID
         id: resolve
         shell: bash
         run: |
@@ -50,6 +49,11 @@ jobs:
           else
             echo "env=development" >> "$GITHUB_OUTPUT"
           fi
+
+          # Sanitize GCP_PROJECT_ID by stripping accidental whitespace/newlines
+          CLEAN_PROJECT_ID=$(echo -n "${{ secrets.GCP_PROJECT_ID }}" | tr -d '\r\n' | xargs)
+          echo "PROJECT_ID=${CLEAN_PROJECT_ID}" >> "$GITHUB_ENV"
+          echo "project_id=${CLEAN_PROJECT_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Authenticate to Google Cloud via Workload Identity Federation (WIF)
         id: auth
@@ -62,23 +66,27 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Build Container with Cloud Build
+        shell: bash
         run: |
-          IMAGE_URI="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/portfolio/${{ env.SERVICE_NAME }}:${{ github.sha }}"
-          echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
+          set -euo pipefail
+          IMAGE_URI="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/portfolio/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
           
           echo "🚀 Submitting build to Google Cloud Build: ${IMAGE_URI}"
           gcloud builds submit backend \
             --tag "${IMAGE_URI}" \
-            --project "${{ env.GCP_PROJECT_ID }}"
+            --project "${{ env.PROJECT_ID }}"
 
       - name: Deploy to Cloud Run
         id: deploy
+        shell: bash
         run: |
+          set -euo pipefail
           echo "🚀 Deploying image to Google Cloud Run..."
           gcloud run deploy ${{ env.SERVICE_NAME }} \
             --image "${{ env.IMAGE_URI }}" \
             --region "${{ env.GCP_REGION }}" \
-            --project "${{ env.GCP_PROJECT_ID }}" \
+            --project "${{ env.PROJECT_ID }}" \
             --platform managed \
             --cpu 1 \
             --memory 512Mi \
@@ -92,13 +100,14 @@ jobs:
           SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
             --platform managed \
             --region "${{ env.GCP_REGION }}" \
-            --project "${{ env.GCP_PROJECT_ID }}" \
+            --project "${{ env.PROJECT_ID }}" \
             --format 'value(status.url)')
           
-          echo "SERVICE_URL=${SERVICE_URL}" >> $GITHUB_ENV
-          echo "service_url=${SERVICE_URL}" >> $GITHUB_OUTPUT
+          echo "SERVICE_URL=${SERVICE_URL}" >> "$GITHUB_ENV"
+          echo "service_url=${SERVICE_URL}" >> "$GITHUB_OUTPUT"
 
       - name: Health Check Verification
+        shell: bash
         run: |
           echo "🏥 Probing /api/health endpoint at: ${{ env.SERVICE_URL }}/api/health"
           curl --fail --silent --show-error "${{ env.SERVICE_URL }}/api/health"

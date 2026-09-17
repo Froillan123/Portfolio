@@ -32,11 +32,12 @@ jobs:
       frontend: ${{ steps.filter.outputs.frontend }}
       backend: ${{ steps.filter.outputs.backend }}
       env: ${{ steps.resolve.outputs.env }}
+      project_id: ${{ steps.resolve.outputs.project_id }}
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
 
-      - name: Resolve Environment
+      - name: Resolve Environment & Project ID
         id: resolve
         shell: bash
         run: |
@@ -47,6 +48,9 @@ jobs:
           else
             echo "env=development" >> "$GITHUB_OUTPUT"
           fi
+
+          CLEAN_PROJECT_ID=$(echo -n "${{ secrets.GCP_PROJECT_ID }}" | tr -d '\r\n' | xargs)
+          echo "project_id=${CLEAN_PROJECT_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Check Component Diffs
         id: filter
@@ -108,7 +112,6 @@ jobs:
     if: needs.detect-changes.outputs.backend == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     env:
-      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       GCP_REGION: asia-southeast1
       SERVICE_NAME: portfolio-backend
     steps:
@@ -130,21 +133,27 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Build with Cloud Build
+        shell: bash
         run: |
-          IMAGE_URI="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/portfolio/${{ env.SERVICE_NAME }}:${{ github.sha }}"
-          echo "IMAGE_URI=${IMAGE_URI}" >> $GITHUB_ENV
+          set -euo pipefail
+          PROJECT_ID="${{ needs.detect-changes.outputs.project_id }}"
+          IMAGE_URI="${{ env.GCP_REGION }}-docker.pkg.dev/${PROJECT_ID}/portfolio/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          echo "IMAGE_URI=${IMAGE_URI}" >> "$GITHUB_ENV"
+          echo "PROJECT_ID=${PROJECT_ID}" >> "$GITHUB_ENV"
           
           gcloud builds submit backend \
             --tag "${IMAGE_URI}" \
-            --project "${{ env.GCP_PROJECT_ID }}"
+            --project "${PROJECT_ID}"
 
       - name: Deploy to Cloud Run
         id: deploy
+        shell: bash
         run: |
+          set -euo pipefail
           gcloud run deploy ${{ env.SERVICE_NAME }} \
             --image "${{ env.IMAGE_URI }}" \
             --region "${{ env.GCP_REGION }}" \
-            --project "${{ env.GCP_PROJECT_ID }}" \
+            --project "${{ env.PROJECT_ID }}" \
             --platform managed \
             --cpu 1 \
             --memory 512Mi \
@@ -158,12 +167,13 @@ jobs:
           SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
             --platform managed \
             --region "${{ env.GCP_REGION }}" \
-            --project "${{ env.GCP_PROJECT_ID }}" \
+            --project "${{ env.PROJECT_ID }}" \
             --format 'value(status.url)')
           
-          echo "SERVICE_URL=${SERVICE_URL}" >> $GITHUB_ENV
+          echo "SERVICE_URL=${SERVICE_URL}" >> "$GITHUB_ENV"
 
       - name: Health Check
+        shell: bash
         run: |
           curl --fail --silent --show-error "${{ env.SERVICE_URL }}/api/health"
           echo ""
