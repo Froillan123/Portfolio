@@ -100,7 +100,9 @@ def health_check(db: Session = Depends(get_db)):
         "status": "healthy" if db_status == "connected" else "degraded",
         "database": db_status,
         "rate_limiter": "active",
-        "version": "2.5.0"
+        "version": "2.5.1",
+        "gitops_engine": "github-actions-wif",
+        "region": "asia-southeast1"
     }
 
 # 1. CREATE: Public Contact Ingress (Rate-Limited & WAF Protected)

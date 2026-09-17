@@ -20,6 +20,7 @@ deployment:
   max_poll_timeout_seconds: 300
   domains:
     production:
+      - "froillan-edem-services.online"
       - "froillan-edem.vercel.app"
   environment_variables:
     production:
