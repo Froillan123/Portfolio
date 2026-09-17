@@ -62,13 +62,13 @@ export async function sendContactInquiry(
 
   const sanitizedPayload = sanitizeContactInput(name, email, subject, message);
 
-  // 3. Direct REST API Call to Backend (FastAPI + PostgreSQL)
+  // 3. Direct Ingress Candidates (Environment Base URL + Local Dev Fallback)
   const candidateUrls = [
     CONTACT_ENDPOINT,
-    "http://127.0.0.1:8000/api/contact",
     "/api/contact",
+    "http://127.0.0.1:8000/api/contact",
     "http://localhost:8000/api/contact",
-  ].filter((val, idx, self) => self.indexOf(val) === idx);
+  ].filter(Boolean).filter((val, idx, self) => self.indexOf(val) === idx);
 
   let lastError: any = null;
 

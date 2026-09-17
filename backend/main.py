@@ -79,14 +79,61 @@ class InquiryResponse(BaseModel):
 
 # ----------------- API Endpoints -----------------
 
-@app.get("/")
-def root():
-    return {
-        "service": "Froillan Edem Portfolio Ingress Gateway API",
-        "status": "online",
-        "waf": "Active (Token Bucket + Honeypot + XSS Filter)",
-        "region": "asia-southeast1"
-    }
+from fastapi.responses import HTMLResponse
+
+GOOGLE_404_HTML = """<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, minimum-scale=1, width=device-width">
+    <title>Error 404 (Not Found)!!1</title>
+    <style>
+      * { margin: 0; padding: 0; }
+      html, code { font: 15px/22px arial, sans-serif; }
+      html { background: #fff; color: #222; padding: 15px; }
+      body { margin: 7% auto 0; max-width: 390px; min-height: 180px; padding: 30px 0 15px; }
+      * > body { background: url('https://www.google.com/images/errors/robot.png') 100% 1px no-repeat; padding-right: 205px; }
+      p { margin: 11px 0 22px; overflow: hidden; }
+      ins { color: #777; text-decoration: none; }
+      a img { border: 0; }
+      @media screen and (max-width: 772px) {
+        body { background: none; margin-top: 0; max-width: none; padding-right: 0; }
+      }
+      #logo {
+        background: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_150x54dp.png') no-repeat;
+        margin-left: -5px;
+        display: inline-block;
+        height: 54px;
+        width: 150px;
+      }
+      @media only screen and (min-resolution: 192dpi) {
+        #logo {
+          background: url('https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_150x54dp.png') no-repeat 0% 0%/100% 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a href="https://www.google.com/"><span id="logo" aria-label="Google"></span></a>
+    <p><b>404.</b> <ins>That’s an error.</ins></p>
+    <p>The requested URL was not found on this server. <ins>That’s all we know.</ins></p>
+  </body>
+</html>"""
+
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
+    if exc.status_code == 404:
+        return HTMLResponse(content=GOOGLE_404_HTML, status_code=404)
+    return Response(content=str(exc.detail), status_code=exc.status_code)
+
+@app.get("/", response_class=HTMLResponse, status_code=404)
+@app.get("/docs", response_class=HTMLResponse, status_code=404)
+@app.get("/redoc", response_class=HTMLResponse, status_code=404)
+@app.get("/openapi.json", response_class=HTMLResponse, status_code=404)
+def stealth_not_found():
+    return HTMLResponse(content=GOOGLE_404_HTML, status_code=404)
 
 @app.get("/api/health")
 def health_check(db: Session = Depends(get_db)):
