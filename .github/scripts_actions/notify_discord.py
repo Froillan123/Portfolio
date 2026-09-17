@@ -18,7 +18,7 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 def send_discord_notification():
-    webhook_url = os.getenv("DISCORD_DEPLOY_WEBHOOK_URL") or os.getenv("DISCORD_WEBHOOK_URL")
+    webhook_url = os.getenv("DISCORD_DEPLOY_WEBHOOK_URL")
     if not webhook_url:
         print("ℹ️ DISCORD_DEPLOY_WEBHOOK_URL not set; skipping Discord deployment notification.")
         return

@@ -11,7 +11,6 @@ if env_path.exists():
 if root_env_path.exists():
     load_dotenv(dotenv_path=root_env_path, override=True)
 
-# Database Configuration (Defaults to SQLite if PostgreSQL URL is not provided)
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "sqlite:///./inquiries.db"
